@@ -5,7 +5,10 @@
       "active": true,
       "sources": [
         "https://www.stereoboard.com/madness-tickets",
-        "https://www.songkick.com/artists/433422-madness"
+        "https://www.songkick.com/artists/433422-madness",
+        "https://www.bandsintown.com/a/madness",
+        "https://www.seetickets.com/tour/madness",
+        "https://www.eventim.co.uk/artist/madness/"
       ],
       "notes": "",
       "last_checked": null
@@ -15,7 +18,11 @@
       "active": true,
       "sources": [
         "https://www.concerti-italia.it/artisti/ligabue/",
-        "https://www.songkick.com/artists/253989-ligabue"
+        "https://www.songkick.com/artists/253989-ligabue",
+        "https://www.bandsintown.com/a/ligabue",
+        "https://www.ticketone.it/artist/ligabue/",
+        "https://www.eventim.it/search/?affiliate=ITI&searchterm=ligabue",
+        "https://www.vivoconcerti.com/roster/ligabue/"
       ],
       "notes": "Tour Internacional 2026 + Tour estadis Itàlia + La Notte di Certe Notti tardor",
       "last_checked": null
@@ -26,7 +33,10 @@
       "sources": [
         "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",
         "https://www.vivoconcerti.com/roster/max-pezzali/",
-        "https://www.songkick.com/artists/445567-max-pezzali"
+        "https://www.songkick.com/artists/445567-max-pezzali",
+        "https://www.bandsintown.com/a/max-pezzali",
+        "https://www.ticketone.it/artist/max-pezzali/",
+        "https://www.eventim.it/search/?affiliate=ITI&searchterm=max+pezzali"
       ],
       "notes": "Max Forever Goes to Europe + Tour estadis Itàlia – Gli Anni d'Oro",
       "last_checked": null
@@ -36,7 +46,10 @@
       "active": true,
       "sources": [
         "https://canaledieci.it/2025/03/04/concerti-zero-assoluto-2026-date-biglietti-prezzi-e-scaletta-degli-show-nei-palazzetti/",
-        "https://www.songkick.com/artists/376091-zero-assoluto"
+        "https://www.songkick.com/artists/376091-zero-assoluto",
+        "https://www.bandsintown.com/a/zero-assoluto",
+        "https://www.ticketone.it/artist/zero-assoluto/",
+        "https://www.vivoconcerti.com/roster/zero-assoluto/"
       ],
       "notes": "",
       "last_checked": null
@@ -46,7 +59,11 @@
       "active": false,
       "sources": [
         "https://en.wikipedia.org/wiki/Oasis_Live_'25_Tour",
-        "https://www.songkick.com/artists/548892-oasis"
+        "https://www.songkick.com/artists/548892-oasis",
+        "https://www.bandsintown.com/a/oasis",
+        "https://www.stereoboard.com/oasis-tickets",
+        "https://www.seetickets.com/tour/oasis",
+        "https://www.ticketmaster.co.uk/oasis-tickets/artist/764100"
       ],
       "notes": "Tour 2025 finalitzat. Tour 2027 pendent d'anunci oficial.",
       "last_checked": null
@@ -55,7 +72,11 @@
       "name": "Radiohead",
       "active": false,
       "sources": [
-        "https://www.songkick.com/artists/253846-radiohead"
+        "https://www.songkick.com/artists/253846-radiohead",
+        "https://www.bandsintown.com/a/radiohead",
+        "https://www.stereoboard.com/radiohead-tickets",
+        "https://www.seetickets.com/tour/radiohead",
+        "https://www.ticketmaster.co.uk/radiohead-tickets/artist/768980"
       ],
       "notes": "Tour 2025 finalitzat. 20 concerts previstos per 2027 (dates per anunciar).",
       "last_checked": null
@@ -64,7 +85,12 @@
       "name": "U2",
       "active": false,
       "sources": [
-        "https://www.songkick.com/artists/68594-u2"
+        "https://www.songkick.com/artists/68594-u2",
+        "https://www.bandsintown.com/a/u2",
+        "https://www.u2.com/tour/",
+        "https://www.stereoboard.com/u2-tickets",
+        "https://www.ticketmaster.co.uk/u2-tickets/artist/680840",
+        "https://www.livenation.co.uk/artist-u2-3016"
       ],
       "notes": "Sense dates confirmades per 2026-2027. Album previst finals 2026.",
       "last_checked": null
@@ -73,7 +99,10 @@
       "name": "Supergrass",
       "active": false,
       "sources": [
-        "https://www.songkick.com/artists/57461-supergrass"
+        "https://www.songkick.com/artists/57461-supergrass",
+        "https://www.bandsintown.com/a/supergrass",
+        "https://www.stereoboard.com/supergrass-tickets",
+        "https://www.seetickets.com/tour/supergrass"
       ],
       "notes": "Sense dates confirmades per 2026-2027.",
       "last_checked": null
@@ -83,7 +112,11 @@
       "active": true,
       "sources": [
         "https://www.vascorossi.net/",
-        "https://www.songkick.com/artists/253995-vasco-rossi"
+        "https://www.songkick.com/artists/253995-vasco-rossi",
+        "https://www.bandsintown.com/a/vasco-rossi",
+        "https://www.ticketone.it/artist/vasco-rossi/",
+        "https://www.vivoconcerti.com/roster/vasco-rossi/",
+        "https://www.eventim.it/search/?affiliate=ITI&searchterm=vasco+rossi"
       ],
       "notes": "",
       "last_checked": null
@@ -93,7 +126,11 @@
       "active": false,
       "sources": [
         "https://www.markknopfler.com/tour/",
-        "https://www.songkick.com/artists/65990-mark-knopfler"
+        "https://www.songkick.com/artists/65990-mark-knopfler",
+        "https://www.bandsintown.com/a/mark-knopfler",
+        "https://www.stereoboard.com/mark-knopfler-tickets",
+        "https://www.eventim.co.uk/artist/mark-knopfler/",
+        "https://www.ticketmaster.co.uk/mark-knopfler-tickets/artist/768261"
       ],
       "notes": "Sense dates confirmades verificables per 2026 — pendent d'anunci oficial.",
       "last_checked": null
@@ -103,7 +140,11 @@
       "active": true,
       "sources": [
         "https://blur.co.uk/",
-        "https://www.songkick.com/artists/68022-blur"
+        "https://www.songkick.com/artists/68022-blur",
+        "https://www.bandsintown.com/a/blur",
+        "https://www.stereoboard.com/blur-tickets",
+        "https://www.seetickets.com/tour/blur",
+        "https://www.ticketmaster.co.uk/blur-tickets/artist/763566"
       ],
       "notes": "",
       "last_checked": null
@@ -113,7 +154,11 @@
       "active": true,
       "sources": [
         "https://greenday.com/tour/",
-        "https://www.songkick.com/artists/63504-green-day"
+        "https://www.songkick.com/artists/63504-green-day",
+        "https://www.bandsintown.com/a/green-day",
+        "https://www.ticketmaster.es/search?q=green+day",
+        "https://www.ticketmaster.co.uk/green-day-tickets/artist/763591",
+        "https://www.livenation.co.uk/artist-green-day-2717"
       ],
       "notes": "",
       "last_checked": null
@@ -123,7 +168,10 @@
       "active": true,
       "sources": [
         "https://smashingpumpkins.com/tour/",
-        "https://www.songkick.com/artists/68108-smashing-pumpkins"
+        "https://www.songkick.com/artists/68108-smashing-pumpkins",
+        "https://www.bandsintown.com/a/smashing-pumpkins",
+        "https://www.ticketmaster.co.uk/the-smashing-pumpkins-tickets/artist/768990",
+        "https://www.ticketmaster.es/search?q=smashing+pumpkins"
       ],
       "notes": "",
       "last_checked": null
@@ -133,7 +181,11 @@
       "active": true,
       "sources": [
         "https://www.mikasounds.com/live/",
-        "https://www.songkick.com/artists/231094-mika"
+        "https://www.songkick.com/artists/231094-mika",
+        "https://www.bandsintown.com/a/mika",
+        "https://www.stereoboard.com/mika-tickets",
+        "https://www.seetickets.com/tour/mika",
+        "https://www.eventim.es/search/?affiliate=ESI&searchterm=mika"
       ],
       "notes": "",
       "last_checked": null

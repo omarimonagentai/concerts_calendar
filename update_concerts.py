@@ -80,7 +80,12 @@ def save_json(path, data):
 
 
 def now_iso():
-    return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
+    try:
+        from zoneinfo import ZoneInfo
+        dt = datetime.now(ZoneInfo("Europe/Madrid"))
+    except Exception:
+        dt = datetime.now().astimezone()
+    return dt.strftime("%Y-%m-%dT%H:%M:%S%z")
 
 
 def fetch_url(url, timeout=15):

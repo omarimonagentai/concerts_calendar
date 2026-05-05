@@ -48,6 +48,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 from datetime import datetime
 
 # ── Configuració ──────────────────────────────────────────────────────────────
@@ -118,6 +119,14 @@ def extract_text(html):
     for tag in soup(["script", "style", "noscript"]):
         tag.decompose()
     return soup.get_text(" ", strip=True)
+
+
+def slugify(text):
+    """Genera un slug ASCII a partir d'un text."""
+    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
+    text = text.lower()
+    text = re.sub(r"[^a-z0-9]+", "-", text)
+    return text.strip("-")
 
 
 def find_dates(text):
@@ -281,6 +290,396 @@ def cmd_merge(args):
     return 0
 
 
+# ── Mode automàtic (GitHub Actions) ──────────────────────────────────────────
+
+# Mapa de noms de país (diverses llengües) → codi ISO 2 lletres
+_COUNTRY_TO_CODE = {
+    "united kingdom": "GB", "uk": "GB", "england": "GB",
+    "scotland": "GB", "wales": "GB", "great britain": "GB",
+    "spain": "ES", "españa": "ES", "espagne": "ES",
+    "italy": "IT", "italia": "IT", "italie": "IT",
+    "germany": "DE", "deutschland": "DE", "allemagne": "DE",
+    "france": "FR",
+    "netherlands": "NL", "holland": "NL", "nederland": "NL",
+    "belgium": "BE", "belgique": "BE", "belgië": "BE",
+    "switzerland": "CH", "schweiz": "CH", "suisse": "CH",
+    "austria": "AT", "österreich": "AT",
+    "portugal": "PT",
+    "denmark": "DK", "danmark": "DK",
+    "sweden": "SE", "sverige": "SE",
+    "norway": "NO", "norge": "NO",
+    "finland": "FI", "suomi": "FI",
+    "ireland": "IE", "éire": "IE",
+    "usa": "US", "united states": "US", "u.s.a.": "US",
+    "canada": "CA",
+    "australia": "AU",
+    "japan": "JP", "japon": "JP",
+    "brazil": "BR", "brasil": "BR",
+    "mexico": "MX", "méxico": "MX",
+    "argentina": "AR",
+    "slovenia": "SI", "slowenien": "SI",
+    "luxembourg": "LU",
+    "poland": "PL", "polska": "PL",
+    "czech republic": "CZ", "czechia": "CZ", "česko": "CZ",
+    "hungary": "HU", "magyarország": "HU",
+    "romania": "RO",
+    "serbia": "RS",
+    "croatia": "HR", "hrvatska": "HR",
+    "greece": "GR", "hellas": "GR",
+    "turkey": "TR", "türkiye": "TR",
+    "israel": "IL",
+    "new zealand": "NZ",
+    "south africa": "ZA",
+}
+
+_CODE_TO_COUNTRY = {
+    "GB": "UK", "ES": "Espanya", "IT": "Itàlia", "DE": "Alemanya",
+    "FR": "França", "NL": "Països Baixos", "BE": "Bèlgica",
+    "CH": "Suïssa", "AT": "Àustria", "PT": "Portugal",
+    "DK": "Dinamarca", "SE": "Suècia", "NO": "Noruega",
+    "FI": "Finlàndia", "IE": "Irlanda", "US": "EUA",
+    "CA": "Canadà", "AU": "Austràlia", "JP": "Japó",
+    "BR": "Brasil", "MX": "Mèxic", "AR": "Argentina",
+    "SI": "Eslovènia", "LU": "Luxemburg", "PL": "Polònia",
+    "CZ": "República Txeca", "HU": "Hongria", "RO": "Romania",
+    "RS": "Sèrbia", "HR": "Croàcia", "GR": "Grècia",
+    "TR": "Turquia", "IL": "Israel", "ZA": "Sud-àfrica",
+    "NZ": "Nova Zelanda",
+}
+
+
+def _normalize_country(raw):
+    """Retorna (country_display, country_code) a partir d'un string lliure."""
+    if not raw:
+        return "", ""
+    s = raw.strip()
+    # Pot venir directament com a codi ISO
+    if re.match(r'^[A-Z]{2}$', s):
+        return _CODE_TO_COUNTRY.get(s, s), s
+    code = _COUNTRY_TO_CODE.get(s.lower(), "")
+    display = _CODE_TO_COUNTRY.get(code, s) if code else s
+    return display, code
+
+
+def _abs_url(href, base_url):
+    """Converteix un href relatiu en URL absoluta."""
+    if not href:
+        return ""
+    if href.startswith("http"):
+        return href
+    try:
+        from urllib.parse import urlparse
+        p = urlparse(base_url)
+        return f"{p.scheme}://{p.netloc}{href}" if href.startswith("/") else ""
+    except Exception:
+        return ""
+
+
+def _parse_iso_date(raw):
+    """Intenta convertir un string de data a YYYY-MM-DD. Retorna '' si falla."""
+    if not raw:
+        return ""
+    # Ja en format ISO (pot tenir hora)
+    m = re.match(r'(\d{4}-\d{2}-\d{2})', raw)
+    if m:
+        return m.group(1)
+    return ""
+
+
+def extract_concerts_structured(artist_name, source_url, html, today_str):
+    """
+    Extreu concerts d'una pàgina HTML sense cap API externa.
+
+    Estratègia:
+      1. JSON-LD (schema.org MusicEvent / Event) — molt fiable en llocs moderns.
+      2. Meta/microdata amb itemprop="startDate".
+      3. Fallback: cerca dates ISO en text i intenta extreure venue/city proper.
+    """
+    try:
+        from bs4 import BeautifulSoup
+    except ImportError:
+        return []
+
+    soup = BeautifulSoup(html, "html.parser")
+    results = []
+
+    # ── 1. JSON-LD ────────────────────────────────────────────────────────────
+    EVENT_TYPES = {"MusicEvent", "Event", "TheaterEvent", "SocialEvent",
+                   "Festival", "ScreeningEvent"}
+
+    def _from_jsonld_item(item):
+        if not isinstance(item, dict):
+            return None
+        t = item.get("@type", "")
+        if isinstance(t, list):
+            t = t[0] if t else ""
+        if t not in EVENT_TYPES:
+            return None
+        date_str = _parse_iso_date(
+            item.get("startDate") or item.get("startTime") or ""
+        )
+        if not date_str or date_str < today_str:
+            return None
+
+        loc = item.get("location") or {}
+        if isinstance(loc, str):
+            venue, city, country_raw = loc, "", ""
+        else:
+            venue = loc.get("name", "")
+            addr = loc.get("address") or {}
+            if isinstance(addr, str):
+                city, country_raw = addr, ""
+            else:
+                city = (addr.get("addressLocality")
+                        or addr.get("addressRegion") or "")
+                country_raw = (addr.get("addressCountry")
+                               or addr.get("name") or "")
+
+        country_display, country_code = _normalize_country(country_raw)
+
+        link = item.get("url") or item.get("@id") or ""
+        if not str(link).startswith("http"):
+            link = ""
+
+        name = item.get("name") or f"{artist_name} @ {venue}, {city}"
+        return {
+            "date": date_str,
+            "venue": venue,
+            "city": city,
+            "country": country_display,
+            "country_code": country_code,
+            "title": name,
+            "url": str(link),
+            "notes": "",
+        }
+
+    for script in soup.find_all("script", type="application/ld+json"):
+        try:
+            data = json.loads(script.string or "")
+        except Exception:
+            continue
+        queue = data if isinstance(data, list) else [data]
+        visited = set()
+        while queue:
+            item = queue.pop(0)
+            if not isinstance(item, dict):
+                continue
+            iid = id(item)
+            if iid in visited:
+                continue
+            visited.add(iid)
+            # Expandeix @graph i ItemList
+            if "@graph" in item:
+                queue.extend(item["@graph"] if isinstance(item["@graph"], list) else [])
+            if item.get("@type") == "ItemList":
+                elems = item.get("itemListElement", [])
+                queue.extend(elems if isinstance(elems, list) else [])
+            c = _from_jsonld_item(item)
+            if c:
+                results.append(c)
+
+    if results:
+        return results
+
+    # ── 2. Microdata itemprop="startDate" ─────────────────────────────────────
+    for el in soup.find_all(attrs={"itemprop": "startDate"}):
+        date_str = _parse_iso_date(
+            el.get("content") or el.get("datetime") or el.get_text()
+        )
+        if not date_str or date_str < today_str:
+            continue
+        # Cerca el contenidor de l'event
+        parent = el.parent
+        for _ in range(4):
+            if parent is None:
+                break
+            if parent.get("itemtype", "").endswith(("MusicEvent", "Event")):
+                break
+            parent = parent.parent
+        block = parent or el.parent
+
+        venue_el = block.find(attrs={"itemprop": "name"}) if block else None
+        venue = venue_el.get_text(strip=True) if venue_el else ""
+
+        loc_el = block.find(attrs={"itemprop": "addressLocality"}) if block else None
+        city = loc_el.get_text(strip=True) if loc_el else ""
+
+        cty_el = block.find(attrs={"itemprop": "addressCountry"}) if block else None
+        country_raw = cty_el.get("content") or (cty_el.get_text(strip=True) if cty_el else "")
+        country_display, country_code = _normalize_country(country_raw)
+
+        link_el = block.find("a", href=True) if block else None
+        url = _abs_url(link_el["href"], source_url) if link_el else ""
+
+        results.append({
+            "date": date_str,
+            "venue": venue,
+            "city": city,
+            "country": country_display,
+            "country_code": country_code,
+            "title": f"{artist_name} @ {venue}, {city}".strip(", @"),
+            "url": url,
+            "notes": "",
+        })
+
+    if results:
+        return results
+
+    # ── 3. Fallback: dates ISO en el text de cada bloc ─────────────────────────
+    date_re = re.compile(r'\b(\d{4}-\d{2}-\d{2})\b')
+    seen = set()
+
+    # Cerca en elements de llista / fila de taula / article
+    blocks = soup.find_all(
+        lambda t: t.name in ("li", "tr", "article", "div", "section")
+        and date_re.search(t.get_text())
+        and not any(
+            date_re.search(child.get_text())
+            for child in t.find_all(
+                lambda c: c.name in ("li", "tr", "article"), recursive=False
+            )
+        )
+    )
+
+    for block in blocks:
+        text = block.get_text(" ", strip=True)
+        m = date_re.search(text)
+        if not m:
+            continue
+        date_str = m.group(1)
+        if date_str < today_str or date_str in seen:
+            continue
+        seen.add(date_str)
+
+        link_el = block.find("a", href=True)
+        url = _abs_url(link_el["href"], source_url) if link_el else ""
+
+        # Intenta identificar país en el text
+        country_display, country_code = "", ""
+        for cname, ccode in _COUNTRY_TO_CODE.items():
+            if re.search(r'\b' + re.escape(cname) + r'\b', text, re.IGNORECASE):
+                country_display = _CODE_TO_COUNTRY.get(ccode, cname.title())
+                country_code = ccode
+                break
+
+        clean = date_re.sub("", text).strip()
+        results.append({
+            "date": date_str,
+            "venue": "",
+            "city": "",
+            "country": country_display,
+            "country_code": country_code,
+            "title": f"{artist_name} concert",
+            "url": url,
+            "notes": clean[:200],
+        })
+
+    return results
+
+
+def cmd_auto(args):
+    """Mode automàtic per a GitHub Actions: sincronitza artistes i extreu concerts."""
+    artists_data = load_json(ARTISTS_FILE)
+    if not artists_data:
+        print(f"[!] No s'ha trobat {ARTISTS_FILE}")
+        return 1
+
+    data = load_json(CONCERTS_FILE, default={"concerts": [], "sources": []})
+    today_str = datetime.now().strftime("%Y-%m-%d")
+
+    # Elimina concerts d'artistes que ja no existeixen a artists.json
+    known_artists = {a["name"] for a in artists_data["artists"]}
+    before = len(data["concerts"])
+    data["concerts"] = [c for c in data["concerts"] if c.get("artist") in known_artists]
+    removed = before - len(data["concerts"])
+    if removed:
+        print(f"[sync] Eliminats {removed} concerts d'artistes desconeguts")
+
+    # Elimina concerts passats
+    before = len(data["concerts"])
+    data["concerts"] = [c for c in data["concerts"] if c.get("date", "") >= today_str]
+    expired = before - len(data["concerts"])
+    if expired:
+        print(f"[sync] Eliminats {expired} concerts passats")
+
+    existing_keys = {
+        (c["artist"], c["date"], c.get("city", "").lower())
+        for c in data["concerts"]
+    }
+    existing_ids = {c["id"] for c in data["concerts"]}
+
+    added_total = 0
+    artists = artists_data["artists"]
+    if args.artist:
+        artists = [a for a in artists if a["name"].lower() == args.artist.lower()]
+
+    for artist in artists:
+        if not artist.get("active"):
+            continue
+
+        name = artist["name"]
+        print(f"\n── {name}")
+
+        for src in artist.get("sources", []):
+            print(f"   Descarregant: {src}")
+            html = fetch_url(src)
+            if html is None:
+                print(f"   [!] No s'ha pogut descarregar")
+                continue
+
+            candidates = extract_concerts_structured(name, src, html, today_str)
+            print(f"   Candidats trobats: {len(candidates)}")
+
+            for c in candidates:
+                key = (name, c["date"], c.get("city", "").lower())
+                if key in existing_keys:
+                    continue
+
+                city_slug = slugify(c.get("city") or "unknown")
+                date_slug = c["date"]
+                base_id = f"{slugify(name)}-{date_slug}-{city_slug}"
+                uid = base_id
+                suffix = 2
+                while uid in existing_ids:
+                    uid = f"{base_id}-{suffix}"
+                    suffix += 1
+
+                new_concert = {
+                    "id": uid,
+                    "artist": name,
+                    "title": c.get("title") or f"{name} @ {c.get('venue','')}, {c.get('city','')}",
+                    "date": c["date"],
+                    "venue": c.get("venue", ""),
+                    "city": c.get("city", ""),
+                    "country": c.get("country", ""),
+                    "country_code": c.get("country_code", ""),
+                    "url": c.get("url", ""),
+                    "notes": c.get("notes", ""),
+                }
+                data["concerts"].append(new_concert)
+                existing_keys.add(key)
+                existing_ids.add(uid)
+                added_total += 1
+                print(f"   + {uid}")
+
+        artist["last_checked"] = now_iso()
+
+    print(f"\n[resultat] Afegits {added_total} concerts nous")
+    print(f"[resultat] Total concerts: {len(data['concerts'])}")
+
+    if args.apply:
+        data["last_updated"] = now_iso()
+        save_json(CONCERTS_FILE, data)
+        save_json(ARTISTS_FILE, artists_data)
+        with open(LAST_UPDATE_FILE, "w", encoding="utf-8") as f:
+            f.write(now_iso())
+        print(f"\nconcerts.json actualitzat")
+    else:
+        print("\n[Mode simulació] Cap canvi escrit. Afegeix --apply per aplicar.")
+
+    return 0
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
@@ -292,10 +691,14 @@ def main():
     parser.add_argument("--merge", help="Fusiona concerts d'un JSON a concerts.json")
     parser.add_argument("--apply", action="store_true",
                         help="Aplica els canvis (sense això, mode simulació)")
+    parser.add_argument("--auto", action="store_true",
+                        help="Mode automàtic: extreu concerts via IA (per a GitHub Actions)")
     args = parser.parse_args()
 
     if args.merge:
         return cmd_merge(args)
+    if args.auto:
+        return cmd_auto(args)
     return cmd_report(args)
 
 

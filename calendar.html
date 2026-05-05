@@ -1076,48 +1076,80 @@ function showToast(msg, type = "ok") {
   window._toastTO = setTimeout(() => { t.className = ""; }, 3000);
 }
 
-// ── Refresh ───────────────────────────────────────────────────────────
+// ── GitHub Actions dispatch ───────────────────────────────────────────
+const GH_REPO     = "omarimonagentai/concerts_calendar";
+const GH_WORKFLOW = "update_concerts.yml";
+const GH_BRANCH   = "main";
+const GH_COOLDOWN = 5 * 60 * 1000; // 5 minuts
+
+async function reloadAndRender() {
+  const { concerts, last_updated } = await loadConcertsData();
+  if (!concerts || concerts.length === 0) throw new Error("Sense dades");
+  window._ALL_CONCERTS = concerts;
+  window.CMAP = {};
+  for (const c of concerts) window.CMAP[c.id] = c;
+  buildLegend(concerts);
+  const filtered = getFilteredConcerts();
+  if (window._fc) {
+    window._fc.destroy();
+    document.getElementById("fullcalendar").innerHTML = "";
+  }
+  buildCalendar(filtered);
+  buildByArtist(filtered);
+  buildByDate(filtered);
+  buildByCity(filtered);
+  setLastUpdatedDisplay(last_updated);
+  return concerts.length;
+}
+
 async function refreshData() {
   const btn = document.getElementById("refreshBtn");
   btn.classList.add("loading");
   btn.innerHTML = `<span class="icon">↻</span> Actualitzant…`;
 
-  // Crida al servidor local per sincronitzar concerts.json amb artists.json
-  let serverOk = false;
   try {
-    const res = await fetch("/api/update", { method: "POST" });
-    if (res.ok) { const d = await res.json(); serverOk = d.ok; }
-  } catch (_) {
-    // Servidor no disponible — es recarreguen les dades del disc sense sincronitzar
-  }
+    const lastTrigger = parseInt(localStorage.getItem("gh_last_trigger") || "0");
+    const cooldownPassed = Date.now() - lastTrigger > GH_COOLDOWN;
 
-  try {
-    const { concerts, last_updated } = await loadConcertsData();
-    if (!concerts || concerts.length === 0) throw new Error("Sense dades");
+    if (cooldownPassed) {
+      let token = localStorage.getItem("gh_pat") || "";
+      if (!token) {
+        token = prompt("GitHub Personal Access Token (permís 'workflow'):");
+        if (!token) {
+          showToast("❌ Cal un token per llançar l'actualització", "err");
+          return;
+        }
+        localStorage.setItem("gh_pat", token);
+      }
 
-    window._ALL_CONCERTS = concerts;
-    window.CMAP = {};
-    for (const c of concerts) window.CMAP[c.id] = c;
+      const res = await fetch(
+        `https://api.github.com/repos/${GH_REPO}/actions/workflows/${GH_WORKFLOW}/dispatches`,
+        {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Accept": "application/vnd.github+json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ref: GH_BRANCH }),
+        }
+      );
 
-    buildLegend(concerts);
+      if (res.status === 401 || res.status === 403) {
+        localStorage.removeItem("gh_pat");
+        throw new Error("Token invàlid o sense permisos 'workflow'");
+      }
+      if (!res.ok) throw new Error(`Error GitHub: ${res.status}`);
 
-    const filtered = getFilteredConcerts();
-    if (window._fc) {
-      window._fc.destroy();
-      document.getElementById("fullcalendar").innerHTML = "";
+      localStorage.setItem("gh_last_trigger", Date.now().toString());
+      showToast("Actualització iniciada — torna en ~2 min i torna a prémer", "ok");
+    } else {
+      // Dins la finestra de cooldown: només recarrega dades locals
+      const n = await reloadAndRender();
+      showToast(`Dades recarregades — ${n} concerts`, "ok");
     }
-    buildCalendar(filtered);
-    buildByArtist(filtered);
-    buildByDate(filtered);
-    buildByCity(filtered);
-
-    setLastUpdatedDisplay(last_updated);
-    const msg = serverOk
-      ? `✅ Calendari sincronitzat — ${concerts.length} concerts`
-      : `✅ Dades recarregades — ${concerts.length} concerts`;
-    showToast(msg, "ok");
   } catch (err) {
-    showToast("❌ Error en actualitzar les dades", "err");
+    showToast(`❌ ${err.message}`, "err");
   } finally {
     btn.classList.remove("loading");
     btn.innerHTML = `<span class="icon">↻</span> Actualitzar`;

@@ -292,85 +292,293 @@ def cmd_merge(args):
 
 # ── Mode automàtic (GitHub Actions) ──────────────────────────────────────────
 
-def extract_concerts_ai(artist_name, source_url, html_text, today_str):
+# Mapa de noms de país (diverses llengües) → codi ISO 2 lletres
+_COUNTRY_TO_CODE = {
+    "united kingdom": "GB", "uk": "GB", "england": "GB",
+    "scotland": "GB", "wales": "GB", "great britain": "GB",
+    "spain": "ES", "españa": "ES", "espagne": "ES",
+    "italy": "IT", "italia": "IT", "italie": "IT",
+    "germany": "DE", "deutschland": "DE", "allemagne": "DE",
+    "france": "FR",
+    "netherlands": "NL", "holland": "NL", "nederland": "NL",
+    "belgium": "BE", "belgique": "BE", "belgië": "BE",
+    "switzerland": "CH", "schweiz": "CH", "suisse": "CH",
+    "austria": "AT", "österreich": "AT",
+    "portugal": "PT",
+    "denmark": "DK", "danmark": "DK",
+    "sweden": "SE", "sverige": "SE",
+    "norway": "NO", "norge": "NO",
+    "finland": "FI", "suomi": "FI",
+    "ireland": "IE", "éire": "IE",
+    "usa": "US", "united states": "US", "u.s.a.": "US",
+    "canada": "CA",
+    "australia": "AU",
+    "japan": "JP", "japon": "JP",
+    "brazil": "BR", "brasil": "BR",
+    "mexico": "MX", "méxico": "MX",
+    "argentina": "AR",
+    "slovenia": "SI", "slowenien": "SI",
+    "luxembourg": "LU",
+    "poland": "PL", "polska": "PL",
+    "czech republic": "CZ", "czechia": "CZ", "česko": "CZ",
+    "hungary": "HU", "magyarország": "HU",
+    "romania": "RO",
+    "serbia": "RS",
+    "croatia": "HR", "hrvatska": "HR",
+    "greece": "GR", "hellas": "GR",
+    "turkey": "TR", "türkiye": "TR",
+    "israel": "IL",
+    "new zealand": "NZ",
+    "south africa": "ZA",
+}
+
+_CODE_TO_COUNTRY = {
+    "GB": "UK", "ES": "Espanya", "IT": "Itàlia", "DE": "Alemanya",
+    "FR": "França", "NL": "Països Baixos", "BE": "Bèlgica",
+    "CH": "Suïssa", "AT": "Àustria", "PT": "Portugal",
+    "DK": "Dinamarca", "SE": "Suècia", "NO": "Noruega",
+    "FI": "Finlàndia", "IE": "Irlanda", "US": "EUA",
+    "CA": "Canadà", "AU": "Austràlia", "JP": "Japó",
+    "BR": "Brasil", "MX": "Mèxic", "AR": "Argentina",
+    "SI": "Eslovènia", "LU": "Luxemburg", "PL": "Polònia",
+    "CZ": "República Txeca", "HU": "Hongria", "RO": "Romania",
+    "RS": "Sèrbia", "HR": "Croàcia", "GR": "Grècia",
+    "TR": "Turquia", "IL": "Israel", "ZA": "Sud-àfrica",
+    "NZ": "Nova Zelanda",
+}
+
+
+def _normalize_country(raw):
+    """Retorna (country_display, country_code) a partir d'un string lliure."""
+    if not raw:
+        return "", ""
+    s = raw.strip()
+    # Pot venir directament com a codi ISO
+    if re.match(r'^[A-Z]{2}$', s):
+        return _CODE_TO_COUNTRY.get(s, s), s
+    code = _COUNTRY_TO_CODE.get(s.lower(), "")
+    display = _CODE_TO_COUNTRY.get(code, s) if code else s
+    return display, code
+
+
+def _abs_url(href, base_url):
+    """Converteix un href relatiu en URL absoluta."""
+    if not href:
+        return ""
+    if href.startswith("http"):
+        return href
+    try:
+        from urllib.parse import urlparse
+        p = urlparse(base_url)
+        return f"{p.scheme}://{p.netloc}{href}" if href.startswith("/") else ""
+    except Exception:
+        return ""
+
+
+def _parse_iso_date(raw):
+    """Intenta convertir un string de data a YYYY-MM-DD. Retorna '' si falla."""
+    if not raw:
+        return ""
+    # Ja en format ISO (pot tenir hora)
+    m = re.match(r'(\d{4}-\d{2}-\d{2})', raw)
+    if m:
+        return m.group(1)
+    return ""
+
+
+def extract_concerts_structured(artist_name, source_url, html, today_str):
     """
-    Usa Claude Haiku per extreure concerts futurs d'un text HTML netejat.
-    Retorna llista de dicts amb camps del concert o [] si no en troba.
+    Extreu concerts d'una pàgina HTML sense cap API externa.
+
+    Estratègia:
+      1. JSON-LD (schema.org MusicEvent / Event) — molt fiable en llocs moderns.
+      2. Meta/microdata amb itemprop="startDate".
+      3. Fallback: cerca dates ISO en text i intenta extreure venue/city proper.
     """
     try:
-        import anthropic
+        from bs4 import BeautifulSoup
     except ImportError:
-        print("  [!] Cal instal·lar 'anthropic': pip install anthropic")
         return []
 
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        print("  [!] ANTHROPIC_API_KEY no definida")
-        return []
+    soup = BeautifulSoup(html, "html.parser")
+    results = []
 
-    client = anthropic.Anthropic(api_key=api_key)
+    # ── 1. JSON-LD ────────────────────────────────────────────────────────────
+    EVENT_TYPES = {"MusicEvent", "Event", "TheaterEvent", "SocialEvent",
+                   "Festival", "ScreeningEvent"}
 
-    prompt = f"""You are extracting concert data from a webpage for the artist "{artist_name}".
-Today is {today_str}. Extract only FUTURE concerts (date >= {today_str}).
+    def _from_jsonld_item(item):
+        if not isinstance(item, dict):
+            return None
+        t = item.get("@type", "")
+        if isinstance(t, list):
+            t = t[0] if t else ""
+        if t not in EVENT_TYPES:
+            return None
+        date_str = _parse_iso_date(
+            item.get("startDate") or item.get("startTime") or ""
+        )
+        if not date_str or date_str < today_str:
+            return None
 
-Source URL: {source_url}
+        loc = item.get("location") or {}
+        if isinstance(loc, str):
+            venue, city, country_raw = loc, "", ""
+        else:
+            venue = loc.get("name", "")
+            addr = loc.get("address") or {}
+            if isinstance(addr, str):
+                city, country_raw = addr, ""
+            else:
+                city = (addr.get("addressLocality")
+                        or addr.get("addressRegion") or "")
+                country_raw = (addr.get("addressCountry")
+                               or addr.get("name") or "")
 
-Page text (truncated to 8000 chars):
-{html_text[:8000]}
+        country_display, country_code = _normalize_country(country_raw)
 
-Return a JSON array of concerts. Each concert must have:
-- "date": "YYYY-MM-DD"
-- "venue": venue name
-- "city": city name
-- "country": country name in English
-- "country_code": 2-letter ISO code (uppercase)
-- "title": descriptive title like "{artist_name} @ Venue, City"
-- "url": ticket/info URL if found, else ""
-- "notes": any extra info (support acts, festival name, etc.), else ""
+        link = item.get("url") or item.get("@id") or ""
+        if not str(link).startswith("http"):
+            link = ""
 
-Rules:
-- Only include concerts with a confirmed date (exact day). Skip "TBA" or year-only entries.
-- If no future concerts are found, return an empty array [].
-- Return ONLY the JSON array, no explanation.
-"""
+        name = item.get("name") or f"{artist_name} @ {venue}, {city}"
+        return {
+            "date": date_str,
+            "venue": venue,
+            "city": city,
+            "country": country_display,
+            "country_code": country_code,
+            "title": name,
+            "url": str(link),
+            "notes": "",
+        }
 
-    try:
-        result = []
-        with client.messages.stream(
-            model="claude-haiku-4-5",
-            max_tokens=2048,
-            messages=[{"role": "user", "content": prompt}]
-        ) as stream:
-            raw = stream.get_final_message().content[0].text.strip()
-
-        # Neteja possibles marques de codi
-        if raw.startswith("```"):
-            raw = re.sub(r"^```[a-z]*\n?", "", raw)
-            raw = re.sub(r"\n?```$", "", raw)
-
-        parsed = json.loads(raw)
-        if not isinstance(parsed, list):
-            return []
-
-        for c in parsed:
-            # Valida data
-            try:
-                datetime.strptime(c.get("date", ""), "%Y-%m-%d")
-            except (ValueError, TypeError):
+    for script in soup.find_all("script", type="application/ld+json"):
+        try:
+            data = json.loads(script.string or "")
+        except Exception:
+            continue
+        queue = data if isinstance(data, list) else [data]
+        visited = set()
+        while queue:
+            item = queue.pop(0)
+            if not isinstance(item, dict):
                 continue
-            if c["date"] < today_str:
+            iid = id(item)
+            if iid in visited:
                 continue
-            result.append(c)
+            visited.add(iid)
+            # Expandeix @graph i ItemList
+            if "@graph" in item:
+                queue.extend(item["@graph"] if isinstance(item["@graph"], list) else [])
+            if item.get("@type") == "ItemList":
+                elems = item.get("itemListElement", [])
+                queue.extend(elems if isinstance(elems, list) else [])
+            c = _from_jsonld_item(item)
+            if c:
+                results.append(c)
 
-        return result
+    if results:
+        return results
 
-    except Exception as e:
-        print(f"  [!] Error Claude API: {e}")
-        return []
+    # ── 2. Microdata itemprop="startDate" ─────────────────────────────────────
+    for el in soup.find_all(attrs={"itemprop": "startDate"}):
+        date_str = _parse_iso_date(
+            el.get("content") or el.get("datetime") or el.get_text()
+        )
+        if not date_str or date_str < today_str:
+            continue
+        # Cerca el contenidor de l'event
+        parent = el.parent
+        for _ in range(4):
+            if parent is None:
+                break
+            if parent.get("itemtype", "").endswith(("MusicEvent", "Event")):
+                break
+            parent = parent.parent
+        block = parent or el.parent
+
+        venue_el = block.find(attrs={"itemprop": "name"}) if block else None
+        venue = venue_el.get_text(strip=True) if venue_el else ""
+
+        loc_el = block.find(attrs={"itemprop": "addressLocality"}) if block else None
+        city = loc_el.get_text(strip=True) if loc_el else ""
+
+        cty_el = block.find(attrs={"itemprop": "addressCountry"}) if block else None
+        country_raw = cty_el.get("content") or (cty_el.get_text(strip=True) if cty_el else "")
+        country_display, country_code = _normalize_country(country_raw)
+
+        link_el = block.find("a", href=True) if block else None
+        url = _abs_url(link_el["href"], source_url) if link_el else ""
+
+        results.append({
+            "date": date_str,
+            "venue": venue,
+            "city": city,
+            "country": country_display,
+            "country_code": country_code,
+            "title": f"{artist_name} @ {venue}, {city}".strip(", @"),
+            "url": url,
+            "notes": "",
+        })
+
+    if results:
+        return results
+
+    # ── 3. Fallback: dates ISO en el text de cada bloc ─────────────────────────
+    date_re = re.compile(r'\b(\d{4}-\d{2}-\d{2})\b')
+    seen = set()
+
+    # Cerca en elements de llista / fila de taula / article
+    blocks = soup.find_all(
+        lambda t: t.name in ("li", "tr", "article", "div", "section")
+        and date_re.search(t.get_text())
+        and not any(
+            date_re.search(child.get_text())
+            for child in t.find_all(
+                lambda c: c.name in ("li", "tr", "article"), recursive=False
+            )
+        )
+    )
+
+    for block in blocks:
+        text = block.get_text(" ", strip=True)
+        m = date_re.search(text)
+        if not m:
+            continue
+        date_str = m.group(1)
+        if date_str < today_str or date_str in seen:
+            continue
+        seen.add(date_str)
+
+        link_el = block.find("a", href=True)
+        url = _abs_url(link_el["href"], source_url) if link_el else ""
+
+        # Intenta identificar país en el text
+        country_display, country_code = "", ""
+        for cname, ccode in _COUNTRY_TO_CODE.items():
+            if re.search(r'\b' + re.escape(cname) + r'\b', text, re.IGNORECASE):
+                country_display = _CODE_TO_COUNTRY.get(ccode, cname.title())
+                country_code = ccode
+                break
+
+        clean = date_re.sub("", text).strip()
+        results.append({
+            "date": date_str,
+            "venue": "",
+            "city": "",
+            "country": country_display,
+            "country_code": country_code,
+            "title": f"{artist_name} concert",
+            "url": url,
+            "notes": clean[:200],
+        })
+
+    return results
 
 
 def cmd_auto(args):
-    """Mode automàtic per a GitHub Actions: sincronitza artistes i extreu concerts via IA."""
+    """Mode automàtic per a GitHub Actions: sincronitza artistes i extreu concerts."""
     artists_data = load_json(ARTISTS_FILE)
     if not artists_data:
         print(f"[!] No s'ha trobat {ARTISTS_FILE}")
@@ -419,8 +627,7 @@ def cmd_auto(args):
                 print(f"   [!] No s'ha pogut descarregar")
                 continue
 
-            text = extract_text(html)
-            candidates = extract_concerts_ai(name, src, text, today_str)
+            candidates = extract_concerts_structured(name, src, html, today_str)
             print(f"   Candidats trobats: {len(candidates)}")
 
             for c in candidates:

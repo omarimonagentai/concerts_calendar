@@ -1,0 +1,142 @@
+{
+  "artists": [
+    {
+      "name": "Madness",
+      "active": true,
+      "sources": [
+        "https://www.stereoboard.com/madness-tickets",
+        "https://www.songkick.com/artists/433422-madness"
+      ],
+      "notes": "",
+      "last_checked": null
+    },
+    {
+      "name": "Ligabue",
+      "active": true,
+      "sources": [
+        "https://www.concerti-italia.it/artisti/ligabue/",
+        "https://www.songkick.com/artists/253989-ligabue"
+      ],
+      "notes": "Tour Internacional 2026 + Tour estadis Itàlia + La Notte di Certe Notti tardor",
+      "last_checked": null
+    },
+    {
+      "name": "Max Pezzali",
+      "active": true,
+      "sources": [
+        "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",
+        "https://www.vivoconcerti.com/roster/max-pezzali/",
+        "https://www.songkick.com/artists/445567-max-pezzali"
+      ],
+      "notes": "Max Forever Goes to Europe + Tour estadis Itàlia – Gli Anni d'Oro",
+      "last_checked": null
+    },
+    {
+      "name": "Zero Assoluto",
+      "active": true,
+      "sources": [
+        "https://canaledieci.it/2025/03/04/concerti-zero-assoluto-2026-date-biglietti-prezzi-e-scaletta-degli-show-nei-palazzetti/",
+        "https://www.songkick.com/artists/376091-zero-assoluto"
+      ],
+      "notes": "",
+      "last_checked": null
+    },
+    {
+      "name": "Oasis",
+      "active": false,
+      "sources": [
+        "https://en.wikipedia.org/wiki/Oasis_Live_'25_Tour",
+        "https://www.songkick.com/artists/548892-oasis"
+      ],
+      "notes": "Tour 2025 finalitzat. Tour 2027 pendent d'anunci oficial.",
+      "last_checked": null
+    },
+    {
+      "name": "Radiohead",
+      "active": false,
+      "sources": [
+        "https://www.songkick.com/artists/253846-radiohead"
+      ],
+      "notes": "Tour 2025 finalitzat. 20 concerts previstos per 2027 (dates per anunciar).",
+      "last_checked": null
+    },
+    {
+      "name": "U2",
+      "active": false,
+      "sources": [
+        "https://www.songkick.com/artists/68594-u2"
+      ],
+      "notes": "Sense dates confirmades per 2026-2027. Album previst finals 2026.",
+      "last_checked": null
+    },
+    {
+      "name": "Supergrass",
+      "active": false,
+      "sources": [
+        "https://www.songkick.com/artists/57461-supergrass"
+      ],
+      "notes": "Sense dates confirmades per 2026-2027.",
+      "last_checked": null
+    },
+    {
+      "name": "Vasco Rossi",
+      "active": true,
+      "sources": [
+        "https://www.vascorossi.net/",
+        "https://www.songkick.com/artists/253995-vasco-rossi"
+      ],
+      "notes": "",
+      "last_checked": null
+    },
+    {
+      "name": "Mark Knopfler",
+      "active": false,
+      "sources": [
+        "https://www.markknopfler.com/tour/",
+        "https://www.songkick.com/artists/65990-mark-knopfler"
+      ],
+      "notes": "Sense dates confirmades verificables per 2026 — pendent d'anunci oficial.",
+      "last_checked": null
+    },
+    {
+      "name": "Blur",
+      "active": true,
+      "sources": [
+        "https://blur.co.uk/",
+        "https://www.songkick.com/artists/68022-blur"
+      ],
+      "notes": "",
+      "last_checked": null
+    },
+    {
+      "name": "Green Day",
+      "active": true,
+      "sources": [
+        "https://greenday.com/tour/",
+        "https://www.songkick.com/artists/63504-green-day"
+      ],
+      "notes": "",
+      "last_checked": null
+    },
+    {
+      "name": "The Smashing Pumpkins",
+      "active": true,
+      "sources": [
+        "https://smashingpumpkins.com/tour/",
+        "https://www.songkick.com/artists/68108-smashing-pumpkins"
+      ],
+      "notes": "",
+      "last_checked": null
+    },
+    {
+      "name": "Mika",
+      "active": true,
+      "sources": [
+        "https://www.mikasounds.com/live/",
+        "https://www.songkick.com/artists/231094-mika"
+      ],
+      "notes": "",
+      "last_checked": null
+    }
+  ]
+}

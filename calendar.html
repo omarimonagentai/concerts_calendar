@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Concerts Calendar</title>
+  <!-- Favicon SVG emoji -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236c72ff'/><text y='.85em' x='10' font-size='78'>🎸</text></svg>">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.11/index.global.min.css" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.11/index.global.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f111a;
+      --surface: #1a1d2e;
+      --surface2: #232640;
+      --border: #2e3155;
+      --text: #e2e4f0;
+      --text2: #9499c0;
+      --accent: #6c72ff;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    header h1 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    header h1 span { color: var(--accent); }
+
+    /* ── Refresh button ── */
+    .refresh-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      padding: 7px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: all 0.18s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .refresh-btn:hover { border-color: #22c55e; color: #22c55e; }
+    .refresh-btn.loading { opacity: 0.5; pointer-events: none; }
+    .refresh-btn.loading .icon { display: inline-block; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1c1f38;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 20px;
+      font-size: 0.85rem;
+      color: var(--text);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      opacity: 0;
+      transition: opacity 0.25s, transform 0.25s;
+      pointer-events: none;
+      z-index: 9998;
+      white-space: nowrap;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    #toast.ok  { border-color: #22c55e; }
+    #toast.err { border-color: #ef4444; }
+
+    /* ── Tabs ── */
+    .tabs { display: flex; gap: 6px; }
+    .tab-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      padding: 7px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: all 0.18s;
+    }
+    .tab-btn:hover { border-color: var(--accent); color: var(--text); }
+    .tab-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    /* ── Topbar sticky (header + tabs + legend) ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--bg);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.45);
+    }
+
+    /* ── Legend ── */
+    .legend {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 10px;
+      align-items: center;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.78rem;
+      color: var(--text);
+      cursor: pointer;
+      padding: 4px 9px;
+      border-radius: 7px;
+      border: 1px solid transparent;
+      transition: background 0.15s, border-color 0.15s, opacity 0.15s;
+      user-select: none;
+    }
+    .legend-item:hover { background: var(--surface2); }
+    .legend-item.selected {
+      border-color: var(--accent);
+      background: rgba(108, 114, 255, 0.14);
+    }
+    .legend-item.dimmed { opacity: 0.4; }
+    .legend-item.disabled {
+      cursor: not-allowed;
+      opacity: 0.35;
+    }
+    .legend-item.disabled:hover { background: transparent; }
+
+    .legend-clear {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      padding: 4px 11px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 0.74rem;
+      font-weight: 600;
+      margin-left: auto;
+      transition: all 0.15s;
+    }
+    .legend-clear:hover { border-color: #ef4444; color: #ef4444; }
+    .legend-clear.hidden { display: none; }
+
+    .legend-dot {
+      width: 11px; height: 11px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .legend-count {
+      background: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 1px 7px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text2);
+    }
+    .legend-nodata {
+      color: var(--text2);
+      font-style: italic;
+      opacity: 0.55;
+    }
+
+    /* ── Main ── */
+    main { padding: 24px 28px; max-width: 1200px; margin: 0 auto; }
+
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ── FullCalendar overrides ── */
+    #cal-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .fc { color: var(--text); }
+    .fc-toolbar-title { font-size: 1.1rem !important; color: var(--text) !important; }
+    .fc-button {
+      background: var(--surface2) !important;
+      border-color: var(--border) !important;
+      color: var(--text) !important;
+    }
+    .fc-button:hover { background: var(--accent) !important; border-color: var(--accent) !important; }
+    .fc-button-active { background: var(--accent) !important; border-color: var(--accent) !important; }
+
+    /* ── Bloc del mes ── */
+    .fc-multimonth {
+      border-radius: 14px !important;
+      overflow: hidden;
+      border: 1px solid var(--border) !important;
+      background: var(--surface) !important;
+      margin-bottom: 22px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    }
+
+    /* Capçalera del mes ("Abril 2026") — gran, centrat */
+    .fc-multimonth-header {
+      background: linear-gradient(180deg, var(--surface2) 0%, var(--surface) 100%) !important;
+      border-bottom: 1px solid var(--border) !important;
+    }
+    .fc-multimonth-title {
+      color: var(--text) !important;
+      font-size: 1.35rem !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.01em;
+      padding: 22px 0 18px !important;
+      text-transform: capitalize;
+    }
+
+    /* Capçalera dels dies (dl, dt, dc...) */
+    .fc-col-header-cell {
+      background: transparent !important;
+      border-color: var(--border) !important;
+    }
+    .fc-col-header-cell-cushion {
+      color: var(--accent) !important;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 10px 6px !important;
+      opacity: 0.85;
+    }
+
+    /* Graella dies */
+    .fc-daygrid-day {
+      background: var(--surface);
+      transition: background 0.15s;
+      min-height: 78px;
+    }
+    .fc-daygrid-day:hover { background: var(--surface2); }
+    .fc-day-other { background: rgba(0,0,0,0.18) !important; }
+    .fc-day-other .fc-daygrid-day-number { opacity: 0.35; }
+
+    .fc-scrollgrid { border-color: var(--border) !important; }
+    .fc-scrollgrid td, .fc-scrollgrid th { border-color: var(--border) !important; }
+    .fc-scrollgrid-section > td { border: none !important; }
+
+    /* Número del dia */
+    .fc-daygrid-day-top { justify-content: flex-end; padding: 6px 8px 0 0; }
+    .fc-daygrid-day-number {
+      color: var(--text2) !important;
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+
+    /* Avui — destacat violeta */
+    .fc-day-today {
+      background: rgba(108, 114, 255, 0.10) !important;
+      box-shadow: inset 0 0 0 1px var(--accent);
+    }
+    .fc-day-today .fc-daygrid-day-number {
+      color: #fff !important;
+      font-weight: 800;
+    }
+
+    /* Esdeveniments (concerts) */
+    .fc-event {
+      border: none !important;
+      border-radius: 5px !important;
+      font-size: 0.72rem !important;
+      font-weight: 600 !important;
+      padding: 2px 5px !important;
+      cursor: pointer;
+      margin: 1px 4px !important;
+    }
+    .fc-list-day-cushion { background: var(--surface2) !important; }
+    .fc-list-day-text, .fc-list-day-side-text { color: var(--text) !important; }
+    .fc-list-event:hover td { background: var(--surface2) !important; }
+    .fc-list-event-dot { display: none !important; }
+
+    /* ── Tooltip ── */
+    #tooltip {
+      position: fixed;
+      z-index: 9999;
+      background: #1c1f38;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 13px 17px;
+      min-width: 230px;
+      max-width: 310px;
+      pointer-events: none;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+      display: none;
+    }
+    #tooltip .tt-artist {
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    #tooltip .tt-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    #tooltip .tt-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      font-size: 0.79rem;
+      color: var(--text2);
+      margin-bottom: 4px;
+    }
+    #tooltip .tt-row .icon { min-width: 16px; text-align: center; }
+    #tooltip .tt-notes {
+      margin-top: 9px;
+      padding-top: 9px;
+      border-top: 1px solid var(--border);
+      font-size: 0.77rem;
+      color: var(--text2);
+      font-style: italic;
+    }
+    #tooltip a {
+      display: block;
+      margin-top: 9px;
+      font-size: 0.77rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    #tooltip a:hover { text-decoration: underline; }
+
+    /* ── List views ── */
+    /* Month separator (vista per data) */
+    .month-separator {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 28px 0 14px;
+    }
+    .month-separator:first-child { margin-top: 0; }
+    .month-label {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .month-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .month-count {
+      font-size: 0.72rem;
+      color: var(--text2);
+      background: var(--surface2);
+      border-radius: 20px;
+      padding: 2px 9px;
+      white-space: nowrap;
+    }
+
+    /* Artist section (vista per artista) */
+    .list-section { margin-bottom: 32px; }
+    .list-section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .list-section-dot {
+      width: 13px; height: 13px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .list-section-header h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .list-section-header .count {
+      font-size: 0.75rem;
+      color: var(--text2);
+      background: var(--surface2);
+      border-radius: 20px;
+      padding: 2px 9px;
+    }
+
+    /* Concert card */
+    .concert-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid transparent;
+      border-radius: 10px;
+      padding: 13px 16px;
+      margin-bottom: 8px;
+      display: grid;
+      grid-template-columns: 90px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      transition: background 0.15s;
+      cursor: default;
+    }
+    .concert-card:hover { background: var(--surface2); }
+
+    .card-date {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text2);
+      line-height: 1.5;
+    }
+    .card-date .day-num {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text);
+      display: block;
+      line-height: 1.1;
+    }
+    .card-date .year { font-size: 0.68rem; opacity: 0.5; }
+
+    .card-info .card-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .card-info .card-meta {
+      font-size: 0.76rem;
+      color: var(--text2);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px 12px;
+    }
+    .card-info .card-notes {
+      margin-top: 5px;
+      font-size: 0.73rem;
+      color: var(--text2);
+      font-style: italic;
+    }
+    .card-artist-tag {
+      display: inline-block;
+      font-size: 0.67rem;
+      font-weight: 800;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      padding: 2px 7px;
+      margin-bottom: 5px;
+      color: #fff;
+    }
+
+    .card-country {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      min-width: 56px;
+    }
+    .flag-img {
+      width: 28px;
+      height: 21px;
+      border-radius: 3px;
+      object-fit: cover;
+      display: block;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+    .flag-label {
+      font-size: 0.62rem;
+      color: var(--text2);
+      text-align: center;
+      line-height: 1.1;
+    }
+
+    /* Card clicable */
+    .concert-card.clickable { cursor: pointer; }
+    .concert-card.clickable:hover { background: var(--surface2); }
+    .concert-card.clickable:hover .card-title { color: var(--accent); text-decoration: underline; }
+
+    /* ── Vista per ciutat ── */
+    .country-block { margin-bottom: 40px; }
+
+    .country-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+    .country-header img {
+      width: 42px;
+      height: 31px;
+      border-radius: 5px;
+      object-fit: cover;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      flex-shrink: 0;
+    }
+    .country-header-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #fff;
+      flex: 1;
+    }
+    .country-header-count {
+      font-size: 0.75rem;
+      color: var(--text2);
+      background: var(--bg);
+      border-radius: 20px;
+      padding: 3px 11px;
+    }
+
+    .city-block { margin-bottom: 20px; padding-left: 16px; }
+
+    .city-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .city-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .city-line { flex: 1; height: 1px; background: var(--border); }
+    .city-count {
+      font-size: 0.72rem;
+      color: var(--text2);
+      background: var(--surface2);
+      border-radius: 20px;
+      padding: 2px 8px;
+    }
+
+    /* Card compacta per a la vista per ciutat (sense columna país) */
+    .concert-card-city {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid transparent;
+      border-radius: 10px;
+      padding: 11px 15px;
+      margin-bottom: 7px;
+      display: grid;
+      grid-template-columns: 82px 1fr;
+      gap: 12px;
+      align-items: center;
+      transition: background 0.15s;
+      cursor: default;
+    }
+    .concert-card-city.clickable { cursor: pointer; }
+    .concert-card-city:hover { background: var(--surface2); }
+    .concert-card-city.clickable:hover .card-title { color: var(--accent); text-decoration: underline; }
+
+    /* No data notice */
+    .no-data-notice {
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      color: var(--text2);
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      main { padding: 14px; }
+      .concert-card { grid-template-columns: 70px 1fr; }
+      .card-country { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR (sticky) -->
+<div class="topbar">
+  <!-- HEADER -->
+  <header>
+    <h1><span>Concerts</span> Calendar</h1>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchView('calendar')">Calendari</button>
+      <button class="tab-btn" onclick="switchView('by-artist')">Per Artista</button>
+      <button class="tab-btn" onclick="switchView('by-date')">Per Data</button>
+      <button class="tab-btn" onclick="switchView('by-city')">Per Ciutat</button>
+    </div>
+    <button class="refresh-btn" id="refreshBtn" onclick="refreshData()">Actualitzar</button>
+  </header>
+
+  <!-- LEGEND -->
+  <div class="legend" id="legend"></div>
+</div>
+
+<!-- TOOLTIP -->
+<div id="tooltip"></div>
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- MAIN -->
+<main>
+  <div class="view active" id="view-calendar">
+    <div id="cal-wrapper">
+      <div id="fullcalendar"></div>
+    </div>
+  </div>
+  <div class="view" id="view-by-artist">
+    <div id="list-by-artist"></div>
+  </div>
+  <div class="view" id="view-by-date">
+    <div id="list-by-date"></div>
+  </div>
+  <div class="view" id="view-by-city">
+    <div id="list-by-city"></div>
+  </div>
+</main>
+
+<script>
+// Ordenat alfabèticament
+const ARTISTS = {
+  "Blur":                  { color: "#475569", emoji: "🇬🇧" },
+  "Green Day":             { color: "#84cc16", emoji: "💚" },
+  "Ligabue":               { color: "#ef4444", emoji: "🔥" },
+  "Madness":               { color: "#ec4899", emoji: "🎺" },
+  "Mark Knopfler":         { color: "#a16207", emoji: "🎻" },
+  "Max Pezzali":           { color: "#f59e0b", emoji: "⭐" },
+  "Mika":                  { color: "#d946ef", emoji: "✨" },
+  "Oasis":                 { color: "#f97316", emoji: "🎸" },
+  "Radiohead":             { color: "#8b5cf6", emoji: "🎵" },
+  "Supergrass":            { color: "#10b981", emoji: "🐾" },
+  "The Smashing Pumpkins": { color: "#581c87", emoji: "🎃" },
+  "U2":                    { color: "#3b82f6", emoji: "🎙️" },
+  "Vasco Rossi":           { color: "#991b1b", emoji: "🤘" },
+  "Zero Assoluto":         { color: "#06b6d4", emoji: "❄️" },
+};
+
+// Usa flagcdn.com per imatges reals (funciona a Windows)
+function flagImg(code, country) {
+  const c = (code || "").toLowerCase();
+  return `<img class="flag-img" src="https://flagcdn.com/32x24/${c}.png" alt="${country}" title="${country}">`;
+}
+
+// Mapa nom país per tooltip
+const COUNTRY_NAMES = {
+  GB:"UK", ES:"Espanya", IT:"Itàlia", DE:"Alemanya", DK:"Dinamarca",
+  US:"EUA", CA:"Canadà", BR:"Brasil", FR:"França", NL:"Països Baixos",
+  BE:"Bèlgica", CH:"Suïssa", LU:"Luxemburg", SI:"Eslovènia",
+};
+
+const MONTHS_CA = ["Gener","Febrer","Març","Abril","Maig","Juny",
+                   "Juliol","Agost","Setembre","Octubre","Novembre","Desembre"];
+
+// ── Data loading ─────────────────────────────────────────────────────
+async function loadConcerts() {
+  try {
+    // Cache-busting per evitar versions antigues del navegador
+    const r = await fetch("concerts.json?v=" + Date.now());
+    if (r.ok) { const d = await r.json(); return d.concerts; }
+  } catch(_) {}
+  return [];
+}
+
+// ── Tooltip ──────────────────────────────────────────────────────────
+const tooltip = document.getElementById("tooltip");
+let hideTO;
+
+function showTooltip(e, id) {
+  clearTimeout(hideTO);
+  const c = window.CMAP[id];
+  if (!c) return;
+  const a = ARTISTS[c.artist] || { color:"#888", emoji:"🎵" };
+  const d = new Date(c.date + "T12:00:00");
+  const dateStr = d.toLocaleDateString("ca-ES", {weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  const code = (c.country_code||"").toLowerCase();
+  tooltip.innerHTML = `
+    <div class="tt-artist" style="color:${a.color}">${a.emoji} ${c.artist}</div>
+    <div class="tt-title">${c.title}</div>
+    <div class="tt-row"><span class="icon">📍</span><span>${c.venue}</span></div>
+    <div class="tt-row">
+      <span class="icon"><img class="flag-img" src="https://flagcdn.com/32x24/${code}.png" alt="${c.country}" style="width:18px;height:14px;border-radius:2px;vertical-align:middle"></span>
+      <span>${c.city}, ${c.country}</span>
+    </div>
+    <div class="tt-row"><span class="icon">📅</span><span>${dateStr}</span></div>
+    ${c.notes ? `<div class="tt-notes">${c.notes}</div>` : ""}
+  `;
+  tooltip.style.display = "block";
+  positionTooltip(e);
+}
+function positionTooltip(e) {
+  const m=14, tw=tooltip.offsetWidth, th=tooltip.offsetHeight;
+  let x = e.clientX+m, y = e.clientY+m;
+  if (x+tw > window.innerWidth-10) x = e.clientX-tw-m;
+  if (y+th > window.innerHeight-10) y = e.clientY-th-m;
+  tooltip.style.left = x+"px";
+  tooltip.style.top  = y+"px";
+}
+function hideTooltip() { hideTO = setTimeout(() => tooltip.style.display="none", 200); }
+document.addEventListener("mousemove", e => { if(tooltip.style.display==="block") positionTooltip(e); });
+
+// ── Filtre d'artistes (estat global) ──────────────────────────────────
+const SELECTED_ARTISTS = new Set();
+
+function getFilteredConcerts() {
+  if (SELECTED_ARTISTS.size === 0) return window._ALL_CONCERTS || [];
+  return (window._ALL_CONCERTS || []).filter(c => SELECTED_ARTISTS.has(c.artist));
+}
+
+function toggleArtist(name) {
+  if (SELECTED_ARTISTS.has(name)) SELECTED_ARTISTS.delete(name);
+  else SELECTED_ARTISTS.add(name);
+  applyFilter();
+}
+
+function clearFilter() {
+  SELECTED_ARTISTS.clear();
+  applyFilter();
+}
+
+function applyFilter() {
+  const filtered = getFilteredConcerts();
+
+  // Reconstrueix totes les vistes amb les dades filtrades
+  if (window._fc) {
+    window._fc.destroy();
+    document.getElementById("fullcalendar").innerHTML = "";
+  }
+  buildCalendar(filtered);
+  buildByArtist(filtered);
+  buildByDate(filtered);
+  buildByCity(filtered);
+
+  updateLegendStates();
+}
+
+function updateLegendStates() {
+  const hasFilter = SELECTED_ARTISTS.size > 0;
+  document.querySelectorAll(".legend-item[data-artist]").forEach(el => {
+    if (el.classList.contains("disabled")) return;
+    const name = el.dataset.artist;
+    el.classList.remove("selected", "dimmed");
+    if (hasFilter) {
+      if (SELECTED_ARTISTS.has(name)) el.classList.add("selected");
+      else el.classList.add("dimmed");
+    }
+  });
+  const clearBtn = document.getElementById("legendClearBtn");
+  if (clearBtn) clearBtn.classList.toggle("hidden", !hasFilter);
+}
+
+// ── Legend amb comptadors ─────────────────────────────────────────────
+function buildLegend(concerts) {
+  const counts = {};
+  for (const c of concerts) counts[c.artist] = (counts[c.artist]||0)+1;
+
+  const el = document.getElementById("legend");
+  const allEntries = Object.entries(ARTISTS);
+  const withConcerts = allEntries.filter(([name]) => counts[name]).sort((a,b) => a[0].localeCompare(b[0], "ca"));
+  const withoutConcerts = allEntries.filter(([name]) => !counts[name]).sort((a,b) => a[0].localeCompare(b[0], "ca"));
+  const sorted = [...withConcerts, ...withoutConcerts];
+  const items = sorted.map(([name, a]) => {
+    const n = counts[name];
+    const disabled = !n;
+    const onclick = disabled ? "" : `onclick="toggleArtist('${name.replace(/'/g, "\\'")}')"`;
+    const cls = disabled ? "legend-item disabled" : "legend-item";
+    return `<div class="${cls}" data-artist="${name}" ${onclick} title="${disabled ? 'Sense concerts' : 'Filtra per ' + name}">
+      <div class="legend-dot" style="background:${a.color}"></div>
+      <span>${name}</span>
+      ${n ? `<span class="legend-count">${n}</span>` : `<span class="legend-count legend-nodata">—</span>`}
+    </div>`;
+  }).join("");
+
+  el.innerHTML = items + `<button id="legendClearBtn" class="legend-clear hidden" onclick="clearFilter()">✕ Treu filtre</button>`;
+  updateLegendStates();
+}
+
+// ── Tab switch ────────────────────────────────────────────────────────
+function switchView(v) {
+  document.querySelectorAll(".view").forEach(x => x.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(x => x.classList.remove("active"));
+  document.getElementById("view-"+v).classList.add("active");
+  const idx = ["calendar","by-artist","by-date","by-city"].indexOf(v);
+  document.querySelectorAll(".tab-btn")[idx].classList.add("active");
+}
+
+// ── FullCalendar ──────────────────────────────────────────────────────
+function buildCalendar(concerts) {
+  const events = concerts.map(c => {
+    const a = ARTISTS[c.artist] || { color:"#888", emoji:"🎵" };
+    const code = (c.country_code||"").toLowerCase();
+    return {
+      id: c.id,
+      start: c.date,
+      backgroundColor: a.color,
+      borderColor: "transparent",
+      textColor: "#fff",
+      extendedProps: { id: c.id, code, emoji: a.emoji, artist: c.artist, city: c.city }
+    };
+  });
+
+  // Calcula la durada en mesos: des de maig 2026 fins al darrer concert
+  const startDate = new Date("2026-05-01T12:00:00");
+  const lastConcertDate = concerts.length
+    ? new Date(concerts.map(c => c.date).sort().at(-1) + "T12:00:00")
+    : new Date("2026-12-31T12:00:00");
+  const totalMonths = Math.max(
+    (lastConcertDate.getFullYear() - startDate.getFullYear()) * 12
+    + (lastConcertDate.getMonth() - startDate.getMonth()) + 1,
+    1
+  );
+
+  const cal = new FullCalendar.Calendar(document.getElementById("fullcalendar"), {
+    initialView: "multiMonthStack",
+    initialDate: "2026-05-01",
+    views: {
+      multiMonthStack: {
+        type: "multiMonth",
+        duration: { months: totalMonths }
+      }
+    },
+    multiMonthMaxColumns: 1,
+    locale: "ca",
+    firstDay: 1,
+    headerToolbar: false,
+    height: "auto",
+    events,
+    // Renderitza HTML personalitzat amb imatge de bandera real
+    eventContent(arg) {
+      const { code, emoji, artist, city } = arg.event.extendedProps;
+      const el = document.createElement("div");
+      el.style.cssText = "display:flex;align-items:center;gap:4px;padding:2px 5px;overflow:hidden;white-space:nowrap;font-size:0.72rem;font-weight:600;";
+      el.innerHTML = `<img src="https://flagcdn.com/32x24/${code}.png" style="width:14px;height:11px;border-radius:2px;flex-shrink:0" alt="">${emoji} ${artist} · ${city}`;
+      return { domNodes: [el] };
+    },
+    eventMouseEnter(info) {
+      const rect = info.el.getBoundingClientRect();
+      showTooltip({ clientX: rect.left, clientY: rect.bottom }, info.event.extendedProps.id);
+    },
+    eventMouseLeave() { hideTooltip(); },
+    eventClick(info) {
+      const c = window.CMAP[info.event.extendedProps.id];
+      if (c?.url) window.open(c.url, "_blank");
+    }
+  });
+  cal.render();
+  window._fc = cal;
+}
+
+// ── Dates helpers ─────────────────────────────────────────────────────
+function parseDateParts(dateStr) {
+  const d = new Date(dateStr + "T12:00:00");
+  return {
+    day:   d.getDate(),
+    month: MONTHS_CA[d.getMonth()],
+    mon:   d.getMonth(),
+    year:  d.getFullYear(),
+    key:   `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`
+  };
+}
+
+// ── Concert card HTML ─────────────────────────────────────────────────
+function concertCard(c, showArtistTag) {
+  const a = ARTISTS[c.artist] || { color:"#888", emoji:"🎵" };
+  const code = (c.country_code||"xx").toLowerCase();
+  const countryName = COUNTRY_NAMES[c.country_code] || c.country;
+  const { day, month, year } = parseDateParts(c.date);
+  const clickClass = c.url ? "concert-card clickable" : "concert-card";
+  const clickAttr = c.url ? `onclick="window.open('${c.url}','_blank')"` : "";
+  return `
+  <div class="${clickClass}" ${clickAttr} style="border-left-color:${a.color}"
+       onmouseenter="showTooltip(event,'${c.id}')"
+       onmouseleave="hideTooltip()">
+    <div class="card-date">
+      ${showArtistTag ? `<span class="card-artist-tag" style="background:${a.color}">${a.emoji} ${c.artist}</span>` : ""}
+      <span class="day-num">${day}</span>
+      <span>${month}</span><br>
+      <span class="year">${year}</span>
+    </div>
+    <div class="card-info">
+      <div class="card-title">${c.title}${c.url ? ' <span style="font-size:.7rem;opacity:.5">↗</span>' : ''}</div>
+      <div class="card-meta">
+        <span>📍 ${c.venue}</span>
+        <span>🏙️ ${c.city}</span>
+      </div>
+      ${c.notes ? `<div class="card-notes">${c.notes}</div>` : ""}
+    </div>
+    <div class="card-country">
+      <img class="flag-img" src="https://flagcdn.com/32x24/${code}.png" alt="${countryName}">
+      <span class="flag-label">${countryName}</span>
+    </div>
+  </div>`;
+}
+
+// ── Vista per artista ─────────────────────────────────────────────────
+function buildByArtist(concerts) {
+  const byArtist = {};
+  for (const c of concerts) {
+    if (!byArtist[c.artist]) byArtist[c.artist] = [];
+    byArtist[c.artist].push(c);
+  }
+  const order = Object.keys(ARTISTS);
+  const container = document.getElementById("list-by-artist");
+
+  let html = "";
+  for (const artist of order) {
+    const a = ARTISTS[artist];
+    const cs = (byArtist[artist] || []).sort((x,y) => x.date.localeCompare(y.date));
+    if (cs.length === 0) continue; // Ocultar artistes sense concerts
+    html += `<div class="list-section">
+      <div class="list-section-header">
+        <div class="list-section-dot" style="background:${a.color}"></div>
+        <h2>${a.emoji} ${artist}</h2>
+        <span class="count">${cs.length} concert${cs.length > 1 ? "s" : ""}</span>
+      </div>
+      ${cs.map(c => concertCard(c, false)).join("")}
+    </div>`;
+  }
+  container.innerHTML = html;
+}
+
+// ── Vista per data (agrupada per mes) ─────────────────────────────────
+function buildByDate(concerts) {
+  const sorted = [...concerts].sort((a,b) => a.date.localeCompare(b.date));
+
+  // Agrupar per any-mes
+  const groups = {};
+  for (const c of sorted) {
+    const { key, month, year } = parseDateParts(c.date);
+    if (!groups[key]) groups[key] = { label: `${month} ${year}`, concerts: [] };
+    groups[key].concerts.push(c);
+  }
+
+  let html = "";
+  for (const [, g] of Object.entries(groups)) {
+    html += `<div class="month-separator">
+      <span class="month-label">${g.label}</span>
+      <div class="month-line"></div>
+      <span class="month-count">${g.concerts.length} concert${g.concerts.length>1?"s":""}</span>
+    </div>`;
+    html += g.concerts.map(c => concertCard(c, true)).join("");
+  }
+
+  document.getElementById("list-by-date").innerHTML = html || `<div class="no-data-notice">Cap concert trobat.</div>`;
+}
+
+// ── Vista per ciutat ──────────────────────────────────────────────────
+function buildByCity(concerts) {
+  // Agrupa: country → city → concerts[]
+  const countries = {};
+  for (const c of concerts) {
+    const cKey = c.country;
+    const cityKey = c.city;
+    if (!countries[cKey]) countries[cKey] = { code: c.country_code, cities: {} };
+    if (!countries[cKey].cities[cityKey]) countries[cKey].cities[cityKey] = [];
+    countries[cKey].cities[cityKey].push(c);
+  }
+
+  // Ordena països alfabèticament
+  const sortedCountries = Object.keys(countries).sort((a,b) => a.localeCompare(b, "ca"));
+
+  let html = "";
+  for (const country of sortedCountries) {
+    const { code, cities } = countries[country];
+    const imgCode = (code||"xx").toLowerCase();
+    const totalCountry = Object.values(cities).reduce((s,cs) => s+cs.length, 0);
+
+    // Ordena ciutats alfabèticament
+    const sortedCities = Object.keys(cities).sort((a,b) => a.localeCompare(b, "ca"));
+
+    let citiesHtml = "";
+    for (const city of sortedCities) {
+      const cs = cities[city].sort((a,b) => a.date.localeCompare(b.date));
+      citiesHtml += `
+        <div class="city-block">
+          <div class="city-header">
+            <span class="city-name">🏙️ ${city}</span>
+            <div class="city-line"></div>
+            <span class="city-count">${cs.length} concert${cs.length>1?"s":""}</span>
+          </div>
+          ${cs.map(c => cityCard(c)).join("")}
+        </div>`;
+    }
+
+    html += `
+      <div class="country-block">
+        <div class="country-header">
+          <img src="https://flagcdn.com/32x24/${imgCode}.png" alt="${country}">
+          <span class="country-header-name">${country}</span>
+          <span class="country-header-count">${totalCountry} concert${totalCountry>1?"s":""}</span>
+        </div>
+        ${citiesHtml}
+      </div>`;
+  }
+
+  document.getElementById("list-by-city").innerHTML = html || `<div class="no-data-notice">Cap concert trobat.</div>`;
+}
+
+// Card compacta per a la vista per ciutat (no cal mostrar la bandera, ja és al header)
+function cityCard(c) {
+  const a = ARTISTS[c.artist] || { color:"#888", emoji:"🎵" };
+  const { day, month, year } = parseDateParts(c.date);
+  const clickClass = c.url ? "concert-card-city clickable" : "concert-card-city";
+  const clickAttr  = c.url ? `onclick="window.open('${c.url}','_blank')"` : "";
+  return `
+  <div class="${clickClass}" ${clickAttr} style="border-left-color:${a.color}"
+       onmouseenter="showTooltip(event,'${c.id}')"
+       onmouseleave="hideTooltip()">
+    <div class="card-date">
+      <span class="day-num">${day}</span>
+      <span>${month}</span><br>
+      <span class="year">${year}</span>
+    </div>
+    <div class="card-info">
+      <span class="card-artist-tag" style="background:${a.color}">${a.emoji} ${c.artist}</span>
+      <div class="card-title">${c.title}${c.url?' <span style="font-size:.7rem;opacity:.5">↗</span>':''}</div>
+      <div class="card-meta"><span>📍 ${c.venue}</span></div>
+      ${c.notes ? `<div class="card-notes">${c.notes}</div>` : ""}
+    </div>
+  </div>`;
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────
+function showToast(msg, type = "ok") {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = `show ${type}`;
+  clearTimeout(window._toastTO);
+  window._toastTO = setTimeout(() => { t.className = ""; }, 3000);
+}
+
+// ── Refresh ───────────────────────────────────────────────────────────
+async function refreshData() {
+  const btn = document.getElementById("refreshBtn");
+  btn.classList.add("loading");
+  btn.innerHTML = `Actualitzant…`;
+
+  try {
+    const concerts = await loadConcerts();
+    if (!concerts || concerts.length === 0) throw new Error("Sense dades");
+
+    // Guarda totes les dades originals (per al filtre)
+    window._ALL_CONCERTS = concerts;
+    window.CMAP = {};
+    for (const c of concerts) window.CMAP[c.id] = c;
+
+    // Llegenda sempre amb comptadors totals (no filtrats)
+    buildLegend(concerts);
+
+    // Reconstrueix totes les vistes respectant el filtre actual
+    const filtered = getFilteredConcerts();
+    if (window._fc) {
+      window._fc.destroy();
+      document.getElementById("fullcalendar").innerHTML = "";
+    }
+    buildCalendar(filtered);
+    buildByArtist(filtered);
+    buildByDate(filtered);
+    buildByCity(filtered);
+
+    showToast(`✅ Calendari actualitzat — ${concerts.length} concerts`, "ok");
+  } catch (err) {
+    showToast("❌ Error en actualitzar les dades", "err");
+  } finally {
+    btn.classList.remove("loading");
+    btn.innerHTML = `Actualitzar`;
+  }
+}
+
+// ── Init ──────────────────────────────────────────────────────────────
+(async () => {
+  const concerts = await loadConcerts();
+  window._ALL_CONCERTS = concerts;
+  window.CMAP = {};
+  for (const c of concerts) window.CMAP[c.id] = c;
+
+  buildLegend(concerts);
+  buildCalendar(concerts);
+  buildByArtist(concerts);
+  buildByDate(concerts);
+  buildByCity(concerts);
+})();
+</script>
+</body>
+</html>

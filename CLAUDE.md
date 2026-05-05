@@ -1,0 +1,1 @@
+Project folder: C:\Users\omarimon\OneDrive - Cooltra Motos S.L\Documentos\Claude\Projects\ConcertsCalendar

@@ -724,7 +724,11 @@ function formatLastUpdated(isoStr) {
 function setLastUpdatedDisplay(isoStr) {
   const el = document.getElementById("lastUpdated");
   if (!el) return;
-  const s = formatLastUpdated(isoStr);
+  // Usa la data més recent entre concerts.json i la guardada a localStorage
+  const stored = localStorage.getItem("gh_last_updated") || "";
+  const best = [isoStr, stored].filter(Boolean).sort().at(-1);
+  if (best && best !== stored) localStorage.setItem("gh_last_updated", best);
+  const s = formatLastUpdated(best);
   el.textContent = s ? `Actualitzat: ${s}` : "";
 }
 

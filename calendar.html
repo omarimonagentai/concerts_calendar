@@ -69,6 +69,24 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     .last-updated { font-size: 0.68rem; color: var(--text2); white-space: nowrap; }
 
+    /* Carousel artistes durant l'actualització */
+    .artist-carousel {
+      font-size: 0.7rem;
+      height: 1.1em;
+      overflow: hidden;
+      white-space: nowrap;
+      text-align: right;
+      min-width: 180px;
+    }
+    .artist-carousel span {
+      display: inline-block;
+      animation: fadeSlide 0.5s ease;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(5px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
     /* ── Toast ── */
     #toast {
       position: fixed;
@@ -618,6 +636,7 @@
     <div class="refresh-group">
       <button class="refresh-btn" id="refreshBtn" onclick="refreshData()"><span class="icon">↻</span> Actualitzar</button>
       <span id="lastUpdated" class="last-updated"></span>
+      <div id="artistCarousel" class="artist-carousel"></div>
     </div>
   </header>
 
@@ -1082,6 +1101,62 @@ const GH_WORKFLOW = "update_concerts.yml";
 const GH_BRANCH   = "main";
 const GH_COOLDOWN = 5 * 60 * 1000; // 5 minuts
 
+// Temps estimat del workflow: 30s base + 15s per artista actiu
+const ACTIVE_ARTISTS = Object.keys(ARTISTS).length;
+const GH_COUNTDOWN_S = 30 + ACTIVE_ARTISTS * 15;
+
+let _countdownTimer = null;
+let _carouselTimer  = null;
+
+function _fmtTime(s) {
+  return `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;
+}
+
+function startCountdown(onComplete) {
+  clearInterval(_countdownTimer);
+  const btn = document.getElementById("refreshBtn");
+  const lastTrigger = parseInt(localStorage.getItem("gh_last_trigger") || "0");
+
+  function tick() {
+    const elapsed  = Math.floor((Date.now() - lastTrigger) / 1000);
+    const remaining = Math.max(0, GH_COUNTDOWN_S - elapsed);
+    btn.innerHTML = `<span class="icon">↻</span> ${_fmtTime(remaining)}`;
+    if (remaining <= 0) {
+      clearInterval(_countdownTimer);
+      _countdownTimer = null;
+      stopCarousel();
+      btn.classList.remove("loading");
+      btn.innerHTML = `<span class="icon">↻</span> Actualitzar`;
+      onComplete();
+    }
+  }
+  tick();
+  _countdownTimer = setInterval(tick, 1000);
+}
+
+function startCarousel() {
+  clearInterval(_carouselTimer);
+  const el = document.getElementById("artistCarousel");
+  if (!el) return;
+  const names = Object.keys(ARTISTS);
+  let i = 0;
+  function show() {
+    const name = names[i % names.length];
+    const a = ARTISTS[name] || { color: "#888", emoji: "🎵" };
+    el.innerHTML = `<span style="color:${a.color}">${a.emoji} ${name}…</span>`;
+    i++;
+  }
+  show();
+  _carouselTimer = setInterval(show, 8000);
+}
+
+function stopCarousel() {
+  clearInterval(_carouselTimer);
+  _carouselTimer = null;
+  const el = document.getElementById("artistCarousel");
+  if (el) el.innerHTML = "";
+}
+
 async function reloadAndRender() {
   const { concerts, last_updated } = await loadConcertsData();
   if (!concerts || concerts.length === 0) throw new Error("Sense dades");
@@ -1104,55 +1179,80 @@ async function reloadAndRender() {
 
 async function refreshData() {
   const btn = document.getElementById("refreshBtn");
+
+  // Si ja hi ha un compte enrere actiu, ignora el clic
+  if (_countdownTimer) return;
+
+  const lastTrigger = parseInt(localStorage.getItem("gh_last_trigger") || "0");
+  const cooldownPassed = Date.now() - lastTrigger > GH_COOLDOWN;
+
+  if (!cooldownPassed) {
+    // Dins el cooldown però sense compte enrere (p.ex. recàrrega de pàgina):
+    // reprèn el compte enrere i el carousel
+    btn.classList.add("loading");
+    startCarousel();
+    startCountdown(async () => {
+      try {
+        const n = await reloadAndRender();
+        showToast(`Calendari actualitzat — ${n} concerts`, "ok");
+      } catch (_) {
+        showToast("❌ Error en carregar les dades", "err");
+      }
+    });
+    return;
+  }
+
+  // Primer clic: llança el workflow
   btn.classList.add("loading");
-  btn.innerHTML = `<span class="icon">↻</span> Actualitzant…`;
+  btn.innerHTML = `<span class="icon">↻</span> Connectant…`;
 
   try {
-    const lastTrigger = parseInt(localStorage.getItem("gh_last_trigger") || "0");
-    const cooldownPassed = Date.now() - lastTrigger > GH_COOLDOWN;
-
-    if (cooldownPassed) {
-      let token = localStorage.getItem("gh_pat") || "";
+    let token = localStorage.getItem("gh_pat") || "";
+    if (!token) {
+      token = prompt("GitHub Personal Access Token (permís 'workflow'):");
       if (!token) {
-        token = prompt("GitHub Personal Access Token (permís 'workflow'):");
-        if (!token) {
-          showToast("❌ Cal un token per llançar l'actualització", "err");
-          return;
-        }
-        localStorage.setItem("gh_pat", token);
+        showToast("❌ Cal un token per llançar l'actualització", "err");
+        btn.classList.remove("loading");
+        btn.innerHTML = `<span class="icon">↻</span> Actualitzar`;
+        return;
       }
-
-      const res = await fetch(
-        `https://api.github.com/repos/${GH_REPO}/actions/workflows/${GH_WORKFLOW}/dispatches`,
-        {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Accept": "application/vnd.github+json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ ref: GH_BRANCH }),
-        }
-      );
-
-      if (res.status === 401 || res.status === 403) {
-        localStorage.removeItem("gh_pat");
-        throw new Error("Token invàlid o sense permisos 'workflow'");
-      }
-      if (!res.ok) throw new Error(`Error GitHub: ${res.status}`);
-
-      localStorage.setItem("gh_last_trigger", Date.now().toString());
-      showToast("Actualització iniciada — torna en ~2 min i torna a prémer", "ok");
-    } else {
-      // Dins la finestra de cooldown: només recarrega dades locals
-      const n = await reloadAndRender();
-      showToast(`Dades recarregades — ${n} concerts`, "ok");
+      localStorage.setItem("gh_pat", token);
     }
+
+    const res = await fetch(
+      `https://api.github.com/repos/${GH_REPO}/actions/workflows/${GH_WORKFLOW}/dispatches`,
+      {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Accept": "application/vnd.github+json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ref: GH_BRANCH }),
+      }
+    );
+
+    if (res.status === 401 || res.status === 403) {
+      localStorage.removeItem("gh_pat");
+      throw new Error("Token invàlid o sense permisos 'workflow'");
+    }
+    if (!res.ok) throw new Error(`Error GitHub: ${res.status}`);
+
+    localStorage.setItem("gh_last_trigger", Date.now().toString());
+    startCarousel();
+    startCountdown(async () => {
+      try {
+        const n = await reloadAndRender();
+        showToast(`Calendari actualitzat — ${n} concerts`, "ok");
+      } catch (_) {
+        showToast("❌ Error en carregar les dades", "err");
+      }
+    });
+
   } catch (err) {
-    showToast(`❌ ${err.message}`, "err");
-  } finally {
     btn.classList.remove("loading");
     btn.innerHTML = `<span class="icon">↻</span> Actualitzar`;
+    showToast(`❌ ${err.message}`, "err");
   }
 }
 
@@ -1169,6 +1269,24 @@ async function refreshData() {
   buildByDate(concerts);
   buildByCity(concerts);
   setLastUpdatedDisplay(last_updated);
+
+  // Si hi ha un compte enrere en curs (p.ex. l'usuari ha refrescat la pàgina),
+  // reprèn-lo automàticament
+  const lastTrigger = parseInt(localStorage.getItem("gh_last_trigger") || "0");
+  const elapsed = Math.floor((Date.now() - lastTrigger) / 1000);
+  if (lastTrigger > 0 && elapsed < GH_COUNTDOWN_S) {
+    const btn = document.getElementById("refreshBtn");
+    btn.classList.add("loading");
+    startCarousel();
+    startCountdown(async () => {
+      try {
+        const n = await reloadAndRender();
+        showToast(`Calendari actualitzat — ${n} concerts`, "ok");
+      } catch (_) {
+        showToast("❌ Error en carregar les dades", "err");
+      }
+    });
+  }
 })();
 </script>
 </body>

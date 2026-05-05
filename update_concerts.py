@@ -48,6 +48,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 from datetime import datetime
 
 # ── Configuració ──────────────────────────────────────────────────────────────
@@ -118,6 +119,14 @@ def extract_text(html):
     for tag in soup(["script", "style", "noscript"]):
         tag.decompose()
     return soup.get_text(" ", strip=True)
+
+
+def slugify(text):
+    """Genera un slug ASCII a partir d'un text."""
+    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
+    text = text.lower()
+    text = re.sub(r"[^a-z0-9]+", "-", text)
+    return text.strip("-")
 
 
 def find_dates(text):
@@ -281,6 +290,189 @@ def cmd_merge(args):
     return 0
 
 
+# ── Mode automàtic (GitHub Actions) ──────────────────────────────────────────
+
+def extract_concerts_ai(artist_name, source_url, html_text, today_str):
+    """
+    Usa Claude Haiku per extreure concerts futurs d'un text HTML netejat.
+    Retorna llista de dicts amb camps del concert o [] si no en troba.
+    """
+    try:
+        import anthropic
+    except ImportError:
+        print("  [!] Cal instal·lar 'anthropic': pip install anthropic")
+        return []
+
+    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    if not api_key:
+        print("  [!] ANTHROPIC_API_KEY no definida")
+        return []
+
+    client = anthropic.Anthropic(api_key=api_key)
+
+    prompt = f"""You are extracting concert data from a webpage for the artist "{artist_name}".
+Today is {today_str}. Extract only FUTURE concerts (date >= {today_str}).
+
+Source URL: {source_url}
+
+Page text (truncated to 8000 chars):
+{html_text[:8000]}
+
+Return a JSON array of concerts. Each concert must have:
+- "date": "YYYY-MM-DD"
+- "venue": venue name
+- "city": city name
+- "country": country name in English
+- "country_code": 2-letter ISO code (uppercase)
+- "title": descriptive title like "{artist_name} @ Venue, City"
+- "url": ticket/info URL if found, else ""
+- "notes": any extra info (support acts, festival name, etc.), else ""
+
+Rules:
+- Only include concerts with a confirmed date (exact day). Skip "TBA" or year-only entries.
+- If no future concerts are found, return an empty array [].
+- Return ONLY the JSON array, no explanation.
+"""
+
+    try:
+        result = []
+        with client.messages.stream(
+            model="claude-haiku-4-5",
+            max_tokens=2048,
+            messages=[{"role": "user", "content": prompt}]
+        ) as stream:
+            raw = stream.get_final_message().content[0].text.strip()
+
+        # Neteja possibles marques de codi
+        if raw.startswith("```"):
+            raw = re.sub(r"^```[a-z]*\n?", "", raw)
+            raw = re.sub(r"\n?```$", "", raw)
+
+        parsed = json.loads(raw)
+        if not isinstance(parsed, list):
+            return []
+
+        for c in parsed:
+            # Valida data
+            try:
+                datetime.strptime(c.get("date", ""), "%Y-%m-%d")
+            except (ValueError, TypeError):
+                continue
+            if c["date"] < today_str:
+                continue
+            result.append(c)
+
+        return result
+
+    except Exception as e:
+        print(f"  [!] Error Claude API: {e}")
+        return []
+
+
+def cmd_auto(args):
+    """Mode automàtic per a GitHub Actions: sincronitza artistes i extreu concerts via IA."""
+    artists_data = load_json(ARTISTS_FILE)
+    if not artists_data:
+        print(f"[!] No s'ha trobat {ARTISTS_FILE}")
+        return 1
+
+    data = load_json(CONCERTS_FILE, default={"concerts": [], "sources": []})
+    today_str = datetime.now().strftime("%Y-%m-%d")
+
+    # Elimina concerts d'artistes que ja no existeixen a artists.json
+    known_artists = {a["name"] for a in artists_data["artists"]}
+    before = len(data["concerts"])
+    data["concerts"] = [c for c in data["concerts"] if c.get("artist") in known_artists]
+    removed = before - len(data["concerts"])
+    if removed:
+        print(f"[sync] Eliminats {removed} concerts d'artistes desconeguts")
+
+    # Elimina concerts passats
+    before = len(data["concerts"])
+    data["concerts"] = [c for c in data["concerts"] if c.get("date", "") >= today_str]
+    expired = before - len(data["concerts"])
+    if expired:
+        print(f"[sync] Eliminats {expired} concerts passats")
+
+    existing_keys = {
+        (c["artist"], c["date"], c.get("city", "").lower())
+        for c in data["concerts"]
+    }
+    existing_ids = {c["id"] for c in data["concerts"]}
+
+    added_total = 0
+    artists = artists_data["artists"]
+    if args.artist:
+        artists = [a for a in artists if a["name"].lower() == args.artist.lower()]
+
+    for artist in artists:
+        if not artist.get("active"):
+            continue
+
+        name = artist["name"]
+        print(f"\n── {name}")
+
+        for src in artist.get("sources", []):
+            print(f"   Descarregant: {src}")
+            html = fetch_url(src)
+            if html is None:
+                print(f"   [!] No s'ha pogut descarregar")
+                continue
+
+            text = extract_text(html)
+            candidates = extract_concerts_ai(name, src, text, today_str)
+            print(f"   Candidats trobats: {len(candidates)}")
+
+            for c in candidates:
+                key = (name, c["date"], c.get("city", "").lower())
+                if key in existing_keys:
+                    continue
+
+                city_slug = slugify(c.get("city") or "unknown")
+                date_slug = c["date"]
+                base_id = f"{slugify(name)}-{date_slug}-{city_slug}"
+                uid = base_id
+                suffix = 2
+                while uid in existing_ids:
+                    uid = f"{base_id}-{suffix}"
+                    suffix += 1
+
+                new_concert = {
+                    "id": uid,
+                    "artist": name,
+                    "title": c.get("title") or f"{name} @ {c.get('venue','')}, {c.get('city','')}",
+                    "date": c["date"],
+                    "venue": c.get("venue", ""),
+                    "city": c.get("city", ""),
+                    "country": c.get("country", ""),
+                    "country_code": c.get("country_code", ""),
+                    "url": c.get("url", ""),
+                    "notes": c.get("notes", ""),
+                }
+                data["concerts"].append(new_concert)
+                existing_keys.add(key)
+                existing_ids.add(uid)
+                added_total += 1
+                print(f"   + {uid}")
+
+        artist["last_checked"] = now_iso()
+
+    print(f"\n[resultat] Afegits {added_total} concerts nous")
+    print(f"[resultat] Total concerts: {len(data['concerts'])}")
+
+    if args.apply:
+        data["last_updated"] = now_iso()
+        save_json(CONCERTS_FILE, data)
+        save_json(ARTISTS_FILE, artists_data)
+        with open(LAST_UPDATE_FILE, "w", encoding="utf-8") as f:
+            f.write(now_iso())
+        print(f"\nconcerts.json actualitzat")
+    else:
+        print("\n[Mode simulació] Cap canvi escrit. Afegeix --apply per aplicar.")
+
+    return 0
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
@@ -292,10 +484,14 @@ def main():
     parser.add_argument("--merge", help="Fusiona concerts d'un JSON a concerts.json")
     parser.add_argument("--apply", action="store_true",
                         help="Aplica els canvis (sense això, mode simulació)")
+    parser.add_argument("--auto", action="store_true",
+                        help="Mode automàtic: extreu concerts via IA (per a GitHub Actions)")
     args = parser.parse_args()
 
     if args.merge:
         return cmd_merge(args)
+    if args.auto:
+        return cmd_auto(args)
     return cmd_report(args)
 
 

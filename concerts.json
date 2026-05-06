@@ -781,18 +781,6 @@
       "notes": ""
     },
     {
-      "id": "mika-2026-05-05-philadelphia",
-      "artist": "Mika",
-      "title": "Mika",
-      "date": "2026-05-05",
-      "venue": "Philadelphia Fillmore - Philadelphia",
-      "city": "Philadelphia",
-      "country": "EUA",
-      "country_code": "US",
-      "url": "https://www.stereoboard.com/mika-tickets/philadelphia",
-      "notes": ""
-    },
-    {
       "id": "mika-2026-05-07-chicago",
       "artist": "Mika",
       "title": "Mika",
@@ -923,9 +911,105 @@
       "country_code": "FR",
       "url": "https://www.stereoboard.com/mika-tickets/chalons-en-champagne",
       "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-05-08-toledo",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Recinto Ferial de la Peraleda",
+      "date": "2026-05-08",
+      "venue": "Recinto Ferial de la Peraleda",
+      "city": "Toledo",
+      "country": "Espanya",
+      "country_code": "ES",
+      "url": "https://www.songkick.com/festivals/3537293-toledo-beat/id/42964806-toledo-beat-festival-2026?utm_medium=organic&utm_source=microformat",
+      "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-05-16-barcelona",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Parc del Fòrum",
+      "date": "2026-05-16",
+      "venue": "Parc del Fòrum",
+      "city": "Barcelona",
+      "country": "Espanya",
+      "country_code": "ES",
+      "url": "https://www.songkick.com/festivals/3776126-la-festa-dels-150-anys-estrella-damm/id/43109619-la-festa-dels-150-anys--estrella-damm-2026?utm_medium=organic&utm_source=microformat",
+      "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-05-22-jaen",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Recinto Ferial IFEJA",
+      "date": "2026-05-22",
+      "venue": "Recinto Ferial IFEJA",
+      "city": "Jaén",
+      "country": "Espanya",
+      "country_code": "ES",
+      "url": "https://www.songkick.com/festivals/3668630-oleosonica/id/42964868-oleosnica-2026?utm_medium=organic&utm_source=microformat",
+      "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-05-22-ourense",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Ciudad De Los Muchachos De Bemposta",
+      "date": "2026-05-22",
+      "venue": "Ciudad De Los Muchachos De Bemposta",
+      "city": "Ourense",
+      "country": "Espanya",
+      "country_code": "ES",
+      "url": "https://www.songkick.com/festivals/3422238-ourensound-fest/id/42964830-ourensound-fest-2026?utm_medium=organic&utm_source=microformat",
+      "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-06-15-madrid",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Noches del Botánico",
+      "date": "2026-06-15",
+      "venue": "Noches del Botánico",
+      "city": "Madrid",
+      "country": "Espanya",
+      "country_code": "ES",
+      "url": "https://www.songkick.com/concerts/42985283-love-of-lesbian-at-noches-del-botanico?utm_medium=organic&utm_source=microformat",
+      "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-06-16-madrid",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Noches del Botánico",
+      "date": "2026-06-16",
+      "venue": "Noches del Botánico",
+      "city": "Madrid",
+      "country": "Espanya",
+      "country_code": "ES",
+      "url": "https://www.songkick.com/concerts/42985292-love-of-lesbian-at-noches-del-botanico?utm_medium=organic&utm_source=microformat",
+      "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-06-19-l-estartit",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Ítaca Cultura (Platja Gran)",
+      "date": "2026-06-19",
+      "venue": "Ítaca Cultura (Platja Gran)",
+      "city": "L'Estartit",
+      "country": "Espanya",
+      "country_code": "ES",
+      "url": "https://www.songkick.com/festivals/1067233-itaca/id/42965243-festival-taca-2026?utm_medium=organic&utm_source=microformat",
+      "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-06-19-lleida",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Magnific Fest \"Les Firetes”",
+      "date": "2026-06-19",
+      "venue": "Magnific Fest \"Les Firetes”",
+      "city": "Lleida",
+      "country": "Espanya",
+      "country_code": "ES",
+      "url": "https://www.songkick.com/festivals/3430988-magnific-fest/id/42965366-magnific-fest-2026?utm_medium=organic&utm_source=microformat",
+      "notes": ""
     }
   ],
-  "last_updated": "2026-05-05T21:33:44+0200",
+  "last_updated": "2026-05-06T15:01:41+0200",
   "sources": [
     "https://www.stereoboard.com/madness-tickets",
     "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",

@@ -763,6 +763,7 @@ const ARTISTS = {
   "Blur":                  { color: "#475569", emoji: "🇬🇧" },
   "Green Day":             { color: "#84cc16", emoji: "💚" },
   "Ligabue":               { color: "#ef4444", emoji: "🔥" },
+  "Love Of Lesbian":       { color: "#e879f9", emoji: "🌸" },
   "Madness":               { color: "#ec4899", emoji: "🎺" },
   "Mark Knopfler":         { color: "#a16207", emoji: "🎻" },
   "Max Pezzali":           { color: "#f59e0b", emoji: "⭐" },
@@ -814,7 +815,11 @@ function formatLastUpdated(isoStr) {
 function setLastUpdatedDisplay(isoStr) {
   const el = document.getElementById("lastUpdated");
   if (!el) return;
-  const s = formatLastUpdated(isoStr);
+  // Usa la data més recent entre concerts.json i la guardada a localStorage
+  const stored = localStorage.getItem("gh_last_updated") || "";
+  const best = [isoStr, stored].filter(Boolean).sort().at(-1);
+  if (best && best !== stored) localStorage.setItem("gh_last_updated", best);
+  const s = formatLastUpdated(best);
   el.textContent = s ? `Actualitzat: ${s}` : "";
 }
 

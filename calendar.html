@@ -269,7 +269,6 @@
     .fc-daygrid-day {
       background: var(--surface);
       transition: background 0.15s;
-      min-height: 78px;
     }
     .fc-daygrid-day:hover { background: var(--surface2); }
     .fc-day-other { background: rgba(0,0,0,0.18) !important; }
@@ -719,9 +718,9 @@
     <h1><span>Concerts</span> Calendar</h1>
     <div class="tabs">
       <button class="tab-btn active" onclick="switchView('calendar')">Calendari</button>
-      <button class="tab-btn" onclick="switchView('by-artist')">Per Artista</button>
-      <button class="tab-btn" onclick="switchView('by-date')">Per Data</button>
-      <button class="tab-btn" onclick="switchView('by-city')">Per Ciutat</button>
+      <button class="tab-btn" onclick="switchView('by-artist')">Artista</button>
+      <button class="tab-btn" onclick="switchView('by-date')">Data</button>
+      <button class="tab-btn" onclick="switchView('by-city')">Ciutat</button>
     </div>
     <div class="refresh-group">
       <button class="refresh-btn" id="refreshBtn" onclick="refreshData()"><span class="icon">↻</span> Actualitzar</button>
@@ -1003,6 +1002,7 @@ function buildCalendar(concerts) {
       }
     },
     multiMonthMaxColumns: 1,
+    dayMaxEvents: false,
     locale: "ca",
     firstDay: 1,
     headerToolbar: false,

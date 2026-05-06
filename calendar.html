@@ -593,6 +593,40 @@
       text-align: center;
     }
 
+    /* Toggle mobile — ocult a desktop */
+    .legend-header-mobile {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text2);
+      width: 100%;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s;
+    }
+    .legend.expanded .legend-header-mobile {
+      border-bottom-color: var(--border);
+    }
+    .legend-header-mobile:hover { color: var(--text); }
+    .legend-arrow {
+      font-size: 0.75rem;
+      transition: transform 0.2s;
+      opacity: 0.7;
+    }
+    .legend-header-label { display: flex; align-items: center; gap: 8px; }
+    .legend-header-dots { display: flex; gap: 3px; flex-wrap: wrap; max-width: 160px; }
+    .legend-header-dot-mini {
+      width: 8px; height: 8px;
+      border-radius: 2px;
+    }
+
+    /* Desktop: legend-body transparent wrapper (ha d'anar ABANS del mobile query) */
+    .legend-body { display: contents; }
+
     @media (max-width: 600px) {
       main { padding: 14px; }
       .concert-card { grid-template-columns: 70px 1fr; }
@@ -629,42 +663,6 @@
         margin: 1px !important;
         border-radius: 3px !important;
       }
-    }
-
-    /* Toggle mobile — ocult a desktop */
-    .legend-header-mobile {
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 16px;
-      cursor: pointer;
-      user-select: none;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--text2);
-      width: 100%;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.15s;
-    }
-    .legend.expanded .legend-header-mobile {
-      border-bottom-color: var(--border);
-    }
-    .legend-header-mobile:hover { color: var(--text); }
-    .legend-arrow {
-      font-size: 0.75rem;
-      transition: transform 0.2s;
-      opacity: 0.7;
-    }
-    .legend-header-label { display: flex; align-items: center; gap: 8px; }
-    .legend-header-dots { display: flex; gap: 3px; flex-wrap: wrap; max-width: 160px; }
-    .legend-header-dot-mini {
-      width: 8px; height: 8px;
-      border-radius: 2px;
-    }
-
-    /* Desktop: legend-body transparent wrapper */
-    .legend-body {
-      display: contents;
     }
   </style>
 </head>

@@ -617,6 +617,74 @@
       main { padding: 14px; }
       .concert-card { grid-template-columns: 70px 1fr; }
       .card-country { display: none; }
+
+      /* Legend col·lapsable */
+      .legend {
+        flex-direction: column;
+        padding: 0;
+        gap: 0;
+      }
+      .legend-header-mobile {
+        display: flex !important;
+      }
+      .legend-body {
+        display: none;
+        flex-wrap: wrap;
+        gap: 5px 8px;
+        padding: 8px 14px 12px;
+        width: 100%;
+      }
+      .legend.expanded .legend-body {
+        display: flex;
+      }
+      .legend.expanded .legend-header-mobile .legend-arrow {
+        transform: rotate(180deg);
+      }
+
+      /* Calendari: cel·les més compactes i events mínims */
+      #cal-wrapper { padding: 8px; }
+      .fc-daygrid-day { min-height: 52px !important; }
+      .fc-event {
+        padding: 1px 2px !important;
+        margin: 1px !important;
+        border-radius: 3px !important;
+      }
+    }
+
+    /* Toggle mobile — ocult a desktop */
+    .legend-header-mobile {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text2);
+      width: 100%;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s;
+    }
+    .legend.expanded .legend-header-mobile {
+      border-bottom-color: var(--border);
+    }
+    .legend-header-mobile:hover { color: var(--text); }
+    .legend-arrow {
+      font-size: 0.75rem;
+      transition: transform 0.2s;
+      opacity: 0.7;
+    }
+    .legend-header-label { display: flex; align-items: center; gap: 8px; }
+    .legend-header-dots { display: flex; gap: 3px; flex-wrap: wrap; max-width: 160px; }
+    .legend-header-dot-mini {
+      width: 8px; height: 8px;
+      border-radius: 2px;
+    }
+
+    /* Desktop: legend-body transparent wrapper */
+    .legend-body {
+      display: contents;
     }
   </style>
 </head>
@@ -815,6 +883,11 @@ function updateLegendStates() {
   if (clearBtn) clearBtn.classList.toggle("hidden", !hasFilter);
 }
 
+// ── Legend toggle (mobile) ────────────────────────────────────────────
+function toggleLegendMobile() {
+  document.getElementById("legend").classList.toggle("expanded");
+}
+
 // ── Legend amb comptadors ─────────────────────────────────────────────
 function buildLegend(concerts) {
   const counts = {};
@@ -837,7 +910,22 @@ function buildLegend(concerts) {
     </div>`;
   }).join("");
 
-  el.innerHTML = items + `<button id="legendClearBtn" class="legend-clear hidden" onclick="clearFilter()">✕ Treu filtre</button>`;
+  const activeDots = withConcerts.map(([name, a]) =>
+    `<div class="legend-header-dot-mini" style="background:${a.color}" title="${name}"></div>`
+  ).join("");
+
+  el.innerHTML =
+    `<div class="legend-header-mobile" onclick="toggleLegendMobile()">
+      <div class="legend-header-label">
+        <span>Artistes</span>
+        <div class="legend-header-dots">${activeDots}</div>
+      </div>
+      <span class="legend-arrow">▼</span>
+    </div>
+    <div class="legend-body">
+      ${items}
+      <button id="legendClearBtn" class="legend-clear hidden" onclick="clearFilter()">✕ Treu filtre</button>
+    </div>`;
   updateLegendStates();
 }
 
@@ -895,8 +983,14 @@ function buildCalendar(concerts) {
     eventContent(arg) {
       const { code, emoji, artist, city } = arg.event.extendedProps;
       const el = document.createElement("div");
-      el.style.cssText = "display:flex;align-items:center;gap:4px;padding:2px 5px;overflow:hidden;white-space:nowrap;font-size:0.72rem;font-weight:600;";
-      el.innerHTML = `<img src="https://flagcdn.com/32x24/${code}.png" style="width:14px;height:11px;border-radius:2px;flex-shrink:0" alt="">${emoji} ${artist} · ${city}`;
+      if (window.innerWidth <= 600) {
+        // Mobile: quadradet de color mínim (el color ve del backgroundColor de l'event)
+        el.style.cssText = "width:10px;height:10px;border-radius:2px;margin:1px auto;";
+        el.title = `${artist} · ${city}`;
+      } else {
+        el.style.cssText = "display:flex;align-items:center;gap:4px;padding:2px 5px;overflow:hidden;white-space:nowrap;font-size:0.72rem;font-weight:600;";
+        el.innerHTML = `<img src="https://flagcdn.com/32x24/${code}.png" style="width:14px;height:11px;border-radius:2px;flex-shrink:0" alt="">${emoji} ${artist} · ${city}`;
+      }
       return { domNodes: [el] };
     },
     eventMouseEnter(info) {

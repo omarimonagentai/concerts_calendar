@@ -655,14 +655,38 @@
         transform: rotate(180deg);
       }
 
-      /* Calendari: cel·les més compactes i events mínims */
+      /* Calendari: events com a requadrets inline que s'empaqueten */
       #cal-wrapper { padding: 8px; }
-      .fc-daygrid-day { min-height: 52px !important; }
-      .fc-event {
-        padding: 1px 2px !important;
-        margin: 1px !important;
-        border-radius: 3px !important;
+      .fc-daygrid-day { min-height: 44px !important; }
+
+      /* Forçar layout flex al contenidor d'events */
+      .fc-daygrid-day-events {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 2px !important;
+        padding: 1px 3px 3px !important;
+        min-height: 0 !important;
       }
+      /* Treure el posicionament absolut de cada harness */
+      .fc-daygrid-event-harness {
+        position: static !important;
+        margin: 0 !important;
+        width: auto !important;
+        inset: auto !important;
+      }
+      /* Cada event: requadret petit */
+      .fc-event.fc-daygrid-event {
+        width: 10px !important;
+        height: 10px !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border-radius: 2px !important;
+        overflow: hidden !important;
+        flex-shrink: 0;
+      }
+      /* Amagar el +N more (mostrem tots els events) */
+      .fc-daygrid-more-link { display: none !important; }
     }
   </style>
 </head>
@@ -922,6 +946,8 @@ function buildCalendar(concerts) {
     1
   );
 
+  const isMobile = window.innerWidth <= 600;
+
   const cal = new FullCalendar.Calendar(document.getElementById("fullcalendar"), {
     initialView: "multiMonthStack",
     initialDate: "2026-05-01",
@@ -936,12 +962,13 @@ function buildCalendar(concerts) {
     firstDay: 1,
     headerToolbar: false,
     height: "auto",
+    dayMaxEvents: isMobile ? false : true,
     events,
     // Renderitza HTML personalitzat amb imatge de bandera real
     eventContent(arg) {
       const { code, emoji, artist, city } = arg.event.extendedProps;
       const el = document.createElement("div");
-      if (window.innerWidth <= 600) {
+      if (isMobile) {
         // Mobile: quadradet de color mínim (el color ve del backgroundColor de l'event)
         el.style.cssText = "width:10px;height:10px;border-radius:2px;margin:1px auto;";
         el.title = `${artist} · ${city}`;

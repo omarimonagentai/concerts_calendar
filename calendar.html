@@ -1242,7 +1242,7 @@ function startCountdown(onComplete) {
   const lastTrigger = parseInt(localStorage.getItem("gh_last_trigger") || "0");
 
   function tick() {
-    const elapsed  = Math.floor((Date.now() - lastTrigger) / 1000);
+    const elapsed   = Math.floor((Date.now() - lastTrigger) / 1000);
     const remaining = Math.max(0, GH_COUNTDOWN_S - elapsed);
     btn.innerHTML = `<span class="icon">↻</span> ${_fmtTime(remaining)}`;
     if (remaining <= 0) {
@@ -1256,6 +1256,39 @@ function startCountdown(onComplete) {
   }
   tick();
   _countdownTimer = setInterval(tick, 1000);
+}
+
+// Polling en background: comprova cada 30s si concerts.json ja té dades noves
+let _pollTimer = null;
+async function startPolling(triggerTime) {
+  clearInterval(_pollTimer);
+  let attempts = 0;
+  const maxAttempts = 10; // 5 min màxim
+
+  async function check() {
+    attempts++;
+    const { concerts, last_updated } = await loadConcertsData();
+    const fileTime = last_updated ? new Date(last_updated).getTime() : 0;
+    if (fileTime > triggerTime) {
+      clearInterval(_pollTimer);
+      _pollTimer = null;
+      window._ALL_CONCERTS = concerts;
+      window.CMAP = {};
+      for (const c of concerts) window.CMAP[c.id] = c;
+      buildLegend(concerts);
+      buildCalendar(getFilteredConcerts());
+      buildByArtist(getFilteredConcerts());
+      buildByDate(getFilteredConcerts());
+      buildByCity(getFilteredConcerts());
+      setLastUpdatedDisplay(last_updated);
+      showToast(`Calendari actualitzat — ${concerts.length} concerts`, "ok");
+    } else if (attempts >= maxAttempts) {
+      clearInterval(_pollTimer);
+      _pollTimer = null;
+    }
+  }
+
+  _pollTimer = setInterval(check, 30_000);
 }
 
 function startCarousel() {
@@ -1316,12 +1349,9 @@ async function refreshData() {
     btn.classList.add("loading");
     startCarousel();
     startCountdown(async () => {
-      try {
-        const n = await reloadAndRender();
-        showToast(`Calendari actualitzat — ${n} concerts`, "ok");
-      } catch (_) {
-        showToast("❌ Error en carregar les dades", "err");
-      }
+      const trigger = parseInt(localStorage.getItem("gh_last_trigger") || "0");
+      try { await reloadAndRender(); } catch (_) {}
+      startPolling(trigger);
     });
     return;
   }
@@ -1365,12 +1395,9 @@ async function refreshData() {
     localStorage.setItem("gh_last_trigger", Date.now().toString());
     startCarousel();
     startCountdown(async () => {
-      try {
-        const n = await reloadAndRender();
-        showToast(`Calendari actualitzat — ${n} concerts`, "ok");
-      } catch (_) {
-        showToast("❌ Error en carregar les dades", "err");
-      }
+      const trigger = parseInt(localStorage.getItem("gh_last_trigger") || "0");
+      try { await reloadAndRender(); } catch (_) {}
+      startPolling(trigger);
     });
 
   } catch (err) {
@@ -1403,12 +1430,9 @@ async function refreshData() {
     btn.classList.add("loading");
     startCarousel();
     startCountdown(async () => {
-      try {
-        const n = await reloadAndRender();
-        showToast(`Calendari actualitzat — ${n} concerts`, "ok");
-      } catch (_) {
-        showToast("❌ Error en carregar les dades", "err");
-      }
+      const trigger = parseInt(localStorage.getItem("gh_last_trigger") || "0");
+      try { await reloadAndRender(); } catch (_) {}
+      startPolling(trigger);
     });
   }
 })();

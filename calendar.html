@@ -674,37 +674,22 @@
         transform: rotate(180deg);
       }
 
-      /* Calendari: events com a requadrets inline que s'empaqueten */
+      /* Calendari mòbil: cel·les amb prou altura i events compactes */
       #cal-wrapper { padding: 8px; }
-      .fc-daygrid-day { min-height: 44px !important; }
 
-      /* Forçar layout flex al contenidor d'events */
-      .fc-daygrid-day-events {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        gap: 2px !important;
-        padding: 1px 3px 3px !important;
-        min-height: 0 !important;
+      /* Prou alçada per al número + 2-3 events apilats */
+      .fc-daygrid-day-frame {
+        min-height: 58px !important;
       }
-      /* Treure el posicionament absolut de cada harness */
-      .fc-daygrid-event-harness {
-        position: static !important;
-        margin: 0 !important;
-        width: auto !important;
-        inset: auto !important;
-      }
-      /* Cada event: requadret petit */
+
+      /* Requadret de color mínim sense padding */
       .fc-event.fc-daygrid-event {
-        width: 10px !important;
-        height: 10px !important;
-        min-height: 0 !important;
         padding: 0 !important;
-        margin: 0 !important;
+        margin: 0 1px 1px !important;
         border-radius: 2px !important;
-        overflow: hidden !important;
-        flex-shrink: 0;
       }
-      /* Amagar el +N more (mostrem tots els events) */
+
+      /* Amagar el +N more (dayMaxEvents:false) */
       .fc-daygrid-more-link { display: none !important; }
     }
   </style>

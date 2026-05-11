@@ -97,30 +97,6 @@
       "notes": ""
     },
     {
-      "id": "ligabue-003",
-      "artist": "Ligabue",
-      "title": "Ligabue – Paris",
-      "date": "2026-05-08",
-      "venue": "La Cigale",
-      "city": "París",
-      "country": "França",
-      "country_code": "FR",
-      "url": "https://www.concerti-italia.it/artisti/ligabue/",
-      "notes": "Tour Internacional 2026"
-    },
-    {
-      "id": "ligabue-004",
-      "artist": "Ligabue",
-      "title": "Ligabue – London",
-      "date": "2026-05-09",
-      "venue": "O2 Shepherd's Bush Empire",
-      "city": "Londres",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.concerti-italia.it/artisti/ligabue/",
-      "notes": "Tour Internacional 2026"
-    },
-    {
       "id": "ligabue-005",
       "artist": "Ligabue",
       "title": "Ligabue – Utrecht",
@@ -781,42 +757,6 @@
       "notes": ""
     },
     {
-      "id": "mika-2026-05-07-chicago",
-      "artist": "Mika",
-      "title": "Mika",
-      "date": "2026-05-07",
-      "venue": "Chicago Riviera Theatre - IL",
-      "city": "Chicago",
-      "country": "EUA",
-      "country_code": "US",
-      "url": "https://www.stereoboard.com/mika-tickets/chicago",
-      "notes": ""
-    },
-    {
-      "id": "mika-2026-05-09-dallas",
-      "artist": "Mika",
-      "title": "Mika",
-      "date": "2026-05-09",
-      "venue": "Dallas Bomb Factory",
-      "city": "Dallas",
-      "country": "EUA",
-      "country_code": "US",
-      "url": "https://www.stereoboard.com/mika-tickets/dallas",
-      "notes": ""
-    },
-    {
-      "id": "mika-2026-05-10-austin",
-      "artist": "Mika",
-      "title": "Mika",
-      "date": "2026-05-10",
-      "venue": "Austin ACL Live At The Moody Theater",
-      "city": "Austin",
-      "country": "EUA",
-      "country_code": "US",
-      "url": "https://www.stereoboard.com/mika-tickets/austin",
-      "notes": ""
-    },
-    {
       "id": "mika-2026-05-13-los-angeles",
       "artist": "Mika",
       "title": "Mika",
@@ -913,18 +853,6 @@
       "notes": ""
     },
     {
-      "id": "love-of-lesbian-2026-05-08-toledo",
-      "artist": "Love Of Lesbian",
-      "title": "Love of Lesbian @ Recinto Ferial de la Peraleda",
-      "date": "2026-05-08",
-      "venue": "Recinto Ferial de la Peraleda",
-      "city": "Toledo",
-      "country": "Espanya",
-      "country_code": "ES",
-      "url": "https://www.songkick.com/festivals/3537293-toledo-beat/id/42964806-toledo-beat-festival-2026?utm_medium=organic&utm_source=microformat",
-      "notes": ""
-    },
-    {
       "id": "love-of-lesbian-2026-05-16-barcelona",
       "artist": "Love Of Lesbian",
       "title": "Love of Lesbian @ Parc del Fòrum",
@@ -1007,9 +935,33 @@
       "country_code": "ES",
       "url": "https://www.songkick.com/festivals/3430988-magnific-fest/id/42965366-magnific-fest-2026?utm_medium=organic&utm_source=microformat",
       "notes": ""
+    },
+    {
+      "id": "madness-2026-06-05-falkirk",
+      "artist": "Madness",
+      "title": "Madness",
+      "date": "2026-06-05",
+      "venue": "Falkirk Helix",
+      "city": "Falkirk",
+      "country": "UK",
+      "country_code": "GB",
+      "url": "https://www.stereoboard.com/madness-tickets/falkirk",
+      "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-07-01-cordoba",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Teatro La Axerquia",
+      "date": "2026-07-01",
+      "venue": "Teatro La Axerquia",
+      "city": "Córdoba",
+      "country": "Espanya",
+      "country_code": "ES",
+      "url": "https://www.songkick.com/concerts/43053883-love-of-lesbian-at-teatro-la-axerquia?utm_medium=organic&utm_source=microformat",
+      "notes": ""
     }
   ],
-  "last_updated": "2026-05-06T16:39:06+0200",
+  "last_updated": "2026-05-11T12:30:44+0200",
   "sources": [
     "https://www.stereoboard.com/madness-tickets",
     "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",

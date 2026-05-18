@@ -97,54 +97,6 @@
       "notes": ""
     },
     {
-      "id": "ligabue-005",
-      "artist": "Ligabue",
-      "title": "Ligabue – Utrecht",
-      "date": "2026-05-11",
-      "venue": "TivoliVredenburg",
-      "city": "Utrecht",
-      "country": "Països Baixos",
-      "country_code": "NL",
-      "url": "https://www.concerti-italia.it/artisti/ligabue/",
-      "notes": "Tour Internacional 2026"
-    },
-    {
-      "id": "ligabue-006",
-      "artist": "Ligabue",
-      "title": "Ligabue – Brussels",
-      "date": "2026-05-12",
-      "venue": "Ancienne Belgique",
-      "city": "Brussel·les",
-      "country": "Bèlgica",
-      "country_code": "BE",
-      "url": "https://www.concerti-italia.it/artisti/ligabue/",
-      "notes": "Tour Internacional 2026"
-    },
-    {
-      "id": "ligabue-007",
-      "artist": "Ligabue",
-      "title": "Ligabue – Luxembourg",
-      "date": "2026-05-14",
-      "venue": "den Atelier",
-      "city": "Luxemburg",
-      "country": "Luxemburg",
-      "country_code": "LU",
-      "url": "https://www.concerti-italia.it/artisti/ligabue/",
-      "notes": "Tour Internacional 2026"
-    },
-    {
-      "id": "ligabue-008",
-      "artist": "Ligabue",
-      "title": "Ligabue – Zurich",
-      "date": "2026-05-16",
-      "venue": "X-TRA",
-      "city": "Zuric",
-      "country": "Suïssa",
-      "country_code": "CH",
-      "url": "https://www.concerti-italia.it/artisti/ligabue/",
-      "notes": "Tour Internacional 2026"
-    },
-    {
       "id": "ligabue-009",
       "artist": "Ligabue",
       "title": "Ligabue – Bibione",
@@ -757,42 +709,6 @@
       "notes": ""
     },
     {
-      "id": "mika-2026-05-13-los-angeles",
-      "artist": "Mika",
-      "title": "Mika",
-      "date": "2026-05-13",
-      "venue": "Los Angeles Orpheum Theatre - Los Angeles",
-      "city": "Los Angeles",
-      "country": "EUA",
-      "country_code": "US",
-      "url": "https://www.stereoboard.com/mika-tickets/los-angeles",
-      "notes": ""
-    },
-    {
-      "id": "mika-2026-05-14-san-francisco",
-      "artist": "Mika",
-      "title": "Mika",
-      "date": "2026-05-14",
-      "venue": "San Francisco Castro Theatre",
-      "city": "San Francisco",
-      "country": "EUA",
-      "country_code": "US",
-      "url": "https://www.stereoboard.com/mika-tickets/san-francisco",
-      "notes": ""
-    },
-    {
-      "id": "mika-2026-05-16-mexico-city",
-      "artist": "Mika",
-      "title": "Mika",
-      "date": "2026-05-16",
-      "venue": "Mexico City Tecate Emblema",
-      "city": "Mexico City",
-      "country": "Mèxic",
-      "country_code": "MX",
-      "url": "https://www.stereoboard.com/mika-tickets/mexico-city",
-      "notes": ""
-    },
-    {
       "id": "mika-2026-06-26-reading",
       "artist": "Mika",
       "title": "MIKA",
@@ -850,18 +766,6 @@
       "country": "França",
       "country_code": "FR",
       "url": "https://www.stereoboard.com/mika-tickets/chalons-en-champagne",
-      "notes": ""
-    },
-    {
-      "id": "love-of-lesbian-2026-05-16-barcelona",
-      "artist": "Love Of Lesbian",
-      "title": "Love of Lesbian @ Parc del Fòrum",
-      "date": "2026-05-16",
-      "venue": "Parc del Fòrum",
-      "city": "Barcelona",
-      "country": "Espanya",
-      "country_code": "ES",
-      "url": "https://www.songkick.com/festivals/3776126-la-festa-dels-150-anys-estrella-damm/id/43109619-la-festa-dels-150-anys--estrella-damm-2026?utm_medium=organic&utm_source=microformat",
       "notes": ""
     },
     {
@@ -959,9 +863,21 @@
       "country_code": "ES",
       "url": "https://www.songkick.com/concerts/43053883-love-of-lesbian-at-teatro-la-axerquia?utm_medium=organic&utm_source=microformat",
       "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-07-02-barbastro",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Recinto Ferial Barbastro",
+      "date": "2026-07-02",
+      "venue": "Recinto Ferial Barbastro",
+      "city": "Barbastro",
+      "country": "Espanya",
+      "country_code": "ES",
+      "url": "https://www.songkick.com/festivals/403963-polifonik-sound/id/43065367-polifonik-sound-2026?utm_medium=organic&utm_source=microformat",
+      "notes": ""
     }
   ],
-  "last_updated": "2026-05-11T12:30:44+0200",
+  "last_updated": "2026-05-18T12:59:11+0200",
   "sources": [
     "https://www.stereoboard.com/madness-tickets",
     "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",

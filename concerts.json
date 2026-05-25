@@ -565,18 +565,6 @@
       "notes": "Cap Roig Festival 2026"
     },
     {
-      "id": "madness-2026-05-23-bristol",
-      "artist": "Madness",
-      "title": "Madness",
-      "date": "2026-05-23",
-      "venue": "Bristol Ridings",
-      "city": "Bristol",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/madness-tickets/bristol",
-      "notes": ""
-    },
-    {
       "id": "madness-2026-06-13-leicester",
       "artist": "Madness",
       "title": "Madness",
@@ -769,30 +757,6 @@
       "notes": ""
     },
     {
-      "id": "love-of-lesbian-2026-05-22-jaen",
-      "artist": "Love Of Lesbian",
-      "title": "Love of Lesbian @ Recinto Ferial IFEJA",
-      "date": "2026-05-22",
-      "venue": "Recinto Ferial IFEJA",
-      "city": "Jaén",
-      "country": "Espanya",
-      "country_code": "ES",
-      "url": "https://www.songkick.com/festivals/3668630-oleosonica/id/42964868-oleosnica-2026?utm_medium=organic&utm_source=microformat",
-      "notes": ""
-    },
-    {
-      "id": "love-of-lesbian-2026-05-22-ourense",
-      "artist": "Love Of Lesbian",
-      "title": "Love of Lesbian @ Ciudad De Los Muchachos De Bemposta",
-      "date": "2026-05-22",
-      "venue": "Ciudad De Los Muchachos De Bemposta",
-      "city": "Ourense",
-      "country": "Espanya",
-      "country_code": "ES",
-      "url": "https://www.songkick.com/festivals/3422238-ourensound-fest/id/42964830-ourensound-fest-2026?utm_medium=organic&utm_source=microformat",
-      "notes": ""
-    },
-    {
       "id": "love-of-lesbian-2026-06-15-madrid",
       "artist": "Love Of Lesbian",
       "title": "Love of Lesbian @ Noches del Botánico",
@@ -875,9 +839,33 @@
       "country_code": "ES",
       "url": "https://www.songkick.com/festivals/403963-polifonik-sound/id/43065367-polifonik-sound-2026?utm_medium=organic&utm_source=microformat",
       "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-07-31-torrevieja",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Parque Antonio Soria",
+      "date": "2026-07-31",
+      "venue": "Parque Antonio Soria",
+      "city": "Torrevieja",
+      "country": "Espanya",
+      "country_code": "ES",
+      "url": "https://www.songkick.com/festivals/943994-low/id/42883946-low-festival-2026?utm_medium=organic&utm_source=microformat",
+      "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-08-05-aranda-de-duero",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Sonorama",
+      "date": "2026-08-05",
+      "venue": "Sonorama",
+      "city": "Aranda de Duero",
+      "country": "Espanya",
+      "country_code": "ES",
+      "url": "https://www.songkick.com/festivals/911194-sonorama-ribera/id/42922460-sonorama-ribera-2026?utm_medium=organic&utm_source=microformat",
+      "notes": ""
     }
   ],
-  "last_updated": "2026-05-18T12:59:11+0200",
+  "last_updated": "2026-05-25T13:06:23+0200",
   "sources": [
     "https://www.stereoboard.com/madness-tickets",
     "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",

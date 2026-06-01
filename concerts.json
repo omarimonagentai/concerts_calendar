@@ -289,18 +289,6 @@
       "notes": "Tour estivo 2026"
     },
     {
-      "id": "vascorossi-001",
-      "artist": "Vasco Rossi",
-      "title": "Vasco Live 2026 – Rimini (Data Zero)",
-      "date": "2026-05-30",
-      "venue": "Stadio Romeo Neri",
-      "city": "Rimini",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.vascorossi.net/it/tour/vasco-live-2026/18-62872.html",
-      "notes": "Data Zero – Vasco Live 2026"
-    },
-    {
       "id": "vascorossi-002",
       "artist": "Vasco Rossi",
       "title": "Vasco Live 2026 – Ferrara (1)",
@@ -863,9 +851,21 @@
       "country_code": "ES",
       "url": "https://www.songkick.com/festivals/911194-sonorama-ribera/id/42922460-sonorama-ribera-2026?utm_medium=organic&utm_source=microformat",
       "notes": ""
+    },
+    {
+      "id": "madness-2026-06-17-newmarket",
+      "artist": "Madness",
+      "title": "Madness",
+      "date": "2026-06-17",
+      "venue": "Newmarket Newmarket Racecourse",
+      "city": "Newmarket",
+      "country": "UK",
+      "country_code": "GB",
+      "url": "https://www.stereoboard.com/madness-tickets/newmarket",
+      "notes": ""
     }
   ],
-  "last_updated": "2026-05-25T13:06:23+0200",
+  "last_updated": "2026-06-01T14:30:40+0200",
   "sources": [
     "https://www.stereoboard.com/madness-tickets",
     "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",

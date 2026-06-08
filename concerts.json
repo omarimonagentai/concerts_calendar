@@ -1,18 +1,6 @@
 {
   "concerts": [
     {
-      "id": "madness-001",
-      "artist": "Madness",
-      "title": "Madness 2026 – Scarborough",
-      "date": "2026-06-06",
-      "venue": "Scarborough Open Air Theatre",
-      "city": "Scarborough",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/madness-tickets",
-      "notes": ""
-    },
-    {
       "id": "madness-002",
       "artist": "Madness",
       "title": "Madness 2026 – Halifax (1)",
@@ -95,18 +83,6 @@
       "country_code": "GB",
       "url": "https://www.stereoboard.com/madness-tickets",
       "notes": ""
-    },
-    {
-      "id": "ligabue-009",
-      "artist": "Ligabue",
-      "title": "Ligabue – Bibione",
-      "date": "2026-06-05",
-      "venue": "Arena Alpe Adria",
-      "city": "Bibione",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.concerti-italia.it/artisti/ligabue/",
-      "notes": "Tour estadis Itàlia 2026"
     },
     {
       "id": "ligabue-010",
@@ -287,30 +263,6 @@
       "country_code": "IT",
       "url": "https://www.visitcampli.it/news-eventi/zeroassoluto/49-163.html",
       "notes": "Tour estivo 2026"
-    },
-    {
-      "id": "vascorossi-002",
-      "artist": "Vasco Rossi",
-      "title": "Vasco Live 2026 – Ferrara (1)",
-      "date": "2026-06-05",
-      "venue": "Parco Urbano Giorgio Bassani",
-      "city": "Ferrara",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.vascorossi.net/it/tour/vasco-live-2026/18-62872.html",
-      "notes": "Vasco Live 2026"
-    },
-    {
-      "id": "vascorossi-003",
-      "artist": "Vasco Rossi",
-      "title": "Vasco Live 2026 – Ferrara (2)",
-      "date": "2026-06-06",
-      "venue": "Parco Urbano Giorgio Bassani",
-      "city": "Ferrara",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.vascorossi.net/it/tour/vasco-live-2026/18-62872.html",
-      "notes": "Vasco Live 2026"
     },
     {
       "id": "vascorossi-004",
@@ -793,18 +745,6 @@
       "notes": ""
     },
     {
-      "id": "madness-2026-06-05-falkirk",
-      "artist": "Madness",
-      "title": "Madness",
-      "date": "2026-06-05",
-      "venue": "Falkirk Helix",
-      "city": "Falkirk",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/madness-tickets/falkirk",
-      "notes": ""
-    },
-    {
       "id": "love-of-lesbian-2026-07-01-cordoba",
       "artist": "Love Of Lesbian",
       "title": "Love of Lesbian @ Teatro La Axerquia",
@@ -865,7 +805,7 @@
       "notes": ""
     }
   ],
-  "last_updated": "2026-06-01T14:30:40+0200",
+  "last_updated": "2026-06-08T13:53:16+0200",
   "sources": [
     "https://www.stereoboard.com/madness-tickets",
     "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",

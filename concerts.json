@@ -1,30 +1,6 @@
 {
   "concerts": [
     {
-      "id": "madness-002",
-      "artist": "Madness",
-      "title": "Madness 2026 – Halifax (1)",
-      "date": "2026-06-11",
-      "venue": "The Piece Hall",
-      "city": "Halifax",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/madness-tickets",
-      "notes": ""
-    },
-    {
-      "id": "madness-003",
-      "artist": "Madness",
-      "title": "Madness 2026 – Halifax (2)",
-      "date": "2026-06-12",
-      "venue": "The Piece Hall",
-      "city": "Halifax",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/madness-tickets",
-      "notes": ""
-    },
-    {
       "id": "madness-004",
       "artist": "Madness",
       "title": "Madness 2026 – Lincoln",
@@ -85,18 +61,6 @@
       "notes": ""
     },
     {
-      "id": "ligabue-010",
-      "artist": "Ligabue",
-      "title": "Ligabue – Roma",
-      "date": "2026-06-12",
-      "venue": "Stadio Olimpico",
-      "city": "Roma",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.concerti-italia.it/artisti/ligabue/",
-      "notes": "Tour estadis Itàlia 2026"
-    },
-    {
       "id": "ligabue-011",
       "artist": "Ligabue",
       "title": "Ligabue – Torino",
@@ -143,18 +107,6 @@
       "country_code": "IT",
       "url": "https://www.concerti-italia.it/artisti/ligabue/",
       "notes": "La Notte di Certe Notti – Tour tardor, últim concert"
-    },
-    {
-      "id": "maxpezzali-009",
-      "artist": "Max Pezzali",
-      "title": "Max Forever Stadi – Torino",
-      "date": "2026-06-14",
-      "venue": "Allianz Stadium",
-      "city": "Torí",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.vivoconcerti.com/roster/max-pezzali/",
-      "notes": "Tour estadis Itàlia – Gli Anni d'Oro"
     },
     {
       "id": "maxpezzali-010",
@@ -265,30 +217,6 @@
       "notes": "Tour estivo 2026"
     },
     {
-      "id": "vascorossi-004",
-      "artist": "Vasco Rossi",
-      "title": "Vasco Live 2026 – Olbia (1)",
-      "date": "2026-06-12",
-      "venue": "Olbia Arena",
-      "city": "Olbia",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.vascorossi.net/it/tour/vasco-live-2026/18-62872.html",
-      "notes": "Vasco Live 2026"
-    },
-    {
-      "id": "vascorossi-005",
-      "artist": "Vasco Rossi",
-      "title": "Vasco Live 2026 – Olbia (2)",
-      "date": "2026-06-13",
-      "venue": "Olbia Arena",
-      "city": "Olbia",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.vascorossi.net/it/tour/vasco-live-2026/18-62872.html",
-      "notes": "Vasco Live 2026"
-    },
-    {
       "id": "vascorossi-006",
       "artist": "Vasco Rossi",
       "title": "Vasco Live 2026 – Bari (1)",
@@ -397,18 +325,6 @@
       "notes": "Saviors Tour 2026 – Europa"
     },
     {
-      "id": "mika-009",
-      "artist": "Mika",
-      "title": "Mika – Cardiff Castle",
-      "date": "2026-06-12",
-      "venue": "Cardiff Castle",
-      "city": "Cardiff",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.yomika.com/tour/",
-      "notes": "Tour estiu 2026"
-    },
-    {
       "id": "mika-010",
       "artist": "Mika",
       "title": "Mika – Wasing Estate",
@@ -503,18 +419,6 @@
       "country_code": "ES",
       "url": "https://www.yomika.com/tour/",
       "notes": "Cap Roig Festival 2026"
-    },
-    {
-      "id": "madness-2026-06-13-leicester",
-      "artist": "Madness",
-      "title": "Madness",
-      "date": "2026-06-13",
-      "venue": "Leicester Abbey Park",
-      "city": "Leicester",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/madness-tickets/leicester",
-      "notes": ""
     },
     {
       "id": "madness-2026-07-04-hamburg",
@@ -805,7 +709,7 @@
       "notes": ""
     }
   ],
-  "last_updated": "2026-06-08T13:53:16+0200",
+  "last_updated": "2026-06-15T14:59:19+0200",
   "sources": [
     "https://www.stereoboard.com/madness-tickets",
     "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",

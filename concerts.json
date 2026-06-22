@@ -1,18 +1,6 @@
 {
   "concerts": [
     {
-      "id": "madness-004",
-      "artist": "Madness",
-      "title": "Madness 2026 – Lincoln",
-      "date": "2026-06-19",
-      "venue": "Lincoln Castle",
-      "city": "Lincoln",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/madness-tickets",
-      "notes": ""
-    },
-    {
       "id": "madness-005",
       "artist": "Madness",
       "title": "Madness 2026 – Newmarket",
@@ -59,30 +47,6 @@
       "country_code": "GB",
       "url": "https://www.stereoboard.com/madness-tickets",
       "notes": ""
-    },
-    {
-      "id": "ligabue-011",
-      "artist": "Ligabue",
-      "title": "Ligabue – Torino",
-      "date": "2026-06-17",
-      "venue": "Allianz Stadium",
-      "city": "Torí",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.concerti-italia.it/artisti/ligabue/",
-      "notes": "Tour estadis Itàlia 2026"
-    },
-    {
-      "id": "ligabue-012",
-      "artist": "Ligabue",
-      "title": "Ligabue – Milano (San Siro)",
-      "date": "2026-06-20",
-      "venue": "Stadio San Siro",
-      "city": "Milà",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.concerti-italia.it/artisti/ligabue/",
-      "notes": "Tour estadis Itàlia 2026"
     },
     {
       "id": "ligabue-013",
@@ -193,18 +157,6 @@
       "notes": ""
     },
     {
-      "id": "zeroassoluto-003",
-      "artist": "Zero Assoluto",
-      "title": "Zero Assoluto – Bra (New Eden Festival)",
-      "date": "2026-06-21",
-      "venue": "Parco della Zizzola",
-      "city": "Bra",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.ticketone.it/event/zero-assoluto-estate-2026-parco-della-zizzola-21476286/",
-      "notes": "New Eden Festival – Tour estivo 2026"
-    },
-    {
       "id": "zeroassoluto-004",
       "artist": "Zero Assoluto",
       "title": "Zero Assoluto – Sant'Onofrio di Campli",
@@ -215,30 +167,6 @@
       "country_code": "IT",
       "url": "https://www.visitcampli.it/news-eventi/zeroassoluto/49-163.html",
       "notes": "Tour estivo 2026"
-    },
-    {
-      "id": "vascorossi-006",
-      "artist": "Vasco Rossi",
-      "title": "Vasco Live 2026 – Bari (1)",
-      "date": "2026-06-18",
-      "venue": "Stadio San Nicola",
-      "city": "Bari",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.vascorossi.net/it/tour/vasco-live-2026/18-62872.html",
-      "notes": "Vasco Live 2026"
-    },
-    {
-      "id": "vascorossi-007",
-      "artist": "Vasco Rossi",
-      "title": "Vasco Live 2026 – Bari (2)",
-      "date": "2026-06-19",
-      "venue": "Stadio San Nicola",
-      "city": "Bari",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.vascorossi.net/it/tour/vasco-live-2026/18-62872.html",
-      "notes": "Vasco Live 2026"
     },
     {
       "id": "vascorossi-008",
@@ -287,42 +215,6 @@
       "country_code": "IT",
       "url": "https://www.vascorossi.net/it/tour/vasco-live-2026/18-62872.html",
       "notes": "Vasco Live 2026"
-    },
-    {
-      "id": "greenday-001",
-      "artist": "Green Day",
-      "title": "Green Day – Berlin",
-      "date": "2026-06-15",
-      "venue": "Olympiastadion",
-      "city": "Berlín",
-      "country": "Alemanya",
-      "country_code": "DE",
-      "url": "https://greenday.com/tour/",
-      "notes": "Saviors Tour 2026 – Europa"
-    },
-    {
-      "id": "greenday-002",
-      "artist": "Green Day",
-      "title": "Green Day – Munich",
-      "date": "2026-06-18",
-      "venue": "Olympiahalle",
-      "city": "Munic",
-      "country": "Alemanya",
-      "country_code": "DE",
-      "url": "https://greenday.com/tour/",
-      "notes": "Saviors Tour 2026 – Europa"
-    },
-    {
-      "id": "greenday-003",
-      "artist": "Green Day",
-      "title": "Green Day – Hamburg",
-      "date": "2026-06-21",
-      "venue": "Barclays Arena",
-      "city": "Hamburg",
-      "country": "Alemanya",
-      "country_code": "DE",
-      "url": "https://greenday.com/tour/",
-      "notes": "Saviors Tour 2026 – Europa"
     },
     {
       "id": "mika-010",
@@ -601,54 +493,6 @@
       "notes": ""
     },
     {
-      "id": "love-of-lesbian-2026-06-15-madrid",
-      "artist": "Love Of Lesbian",
-      "title": "Love of Lesbian @ Noches del Botánico",
-      "date": "2026-06-15",
-      "venue": "Noches del Botánico",
-      "city": "Madrid",
-      "country": "Espanya",
-      "country_code": "ES",
-      "url": "https://www.songkick.com/concerts/42985283-love-of-lesbian-at-noches-del-botanico?utm_medium=organic&utm_source=microformat",
-      "notes": ""
-    },
-    {
-      "id": "love-of-lesbian-2026-06-16-madrid",
-      "artist": "Love Of Lesbian",
-      "title": "Love of Lesbian @ Noches del Botánico",
-      "date": "2026-06-16",
-      "venue": "Noches del Botánico",
-      "city": "Madrid",
-      "country": "Espanya",
-      "country_code": "ES",
-      "url": "https://www.songkick.com/concerts/42985292-love-of-lesbian-at-noches-del-botanico?utm_medium=organic&utm_source=microformat",
-      "notes": ""
-    },
-    {
-      "id": "love-of-lesbian-2026-06-19-l-estartit",
-      "artist": "Love Of Lesbian",
-      "title": "Love of Lesbian @ Ítaca Cultura (Platja Gran)",
-      "date": "2026-06-19",
-      "venue": "Ítaca Cultura (Platja Gran)",
-      "city": "L'Estartit",
-      "country": "Espanya",
-      "country_code": "ES",
-      "url": "https://www.songkick.com/festivals/1067233-itaca/id/42965243-festival-taca-2026?utm_medium=organic&utm_source=microformat",
-      "notes": ""
-    },
-    {
-      "id": "love-of-lesbian-2026-06-19-lleida",
-      "artist": "Love Of Lesbian",
-      "title": "Love of Lesbian @ Magnific Fest \"Les Firetes”",
-      "date": "2026-06-19",
-      "venue": "Magnific Fest \"Les Firetes”",
-      "city": "Lleida",
-      "country": "Espanya",
-      "country_code": "ES",
-      "url": "https://www.songkick.com/festivals/3430988-magnific-fest/id/42965366-magnific-fest-2026?utm_medium=organic&utm_source=microformat",
-      "notes": ""
-    },
-    {
       "id": "love-of-lesbian-2026-07-01-cordoba",
       "artist": "Love Of Lesbian",
       "title": "Love of Lesbian @ Teatro La Axerquia",
@@ -697,19 +541,55 @@
       "notes": ""
     },
     {
-      "id": "madness-2026-06-17-newmarket",
-      "artist": "Madness",
-      "title": "Madness",
-      "date": "2026-06-17",
-      "venue": "Newmarket Newmarket Racecourse",
-      "city": "Newmarket",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/madness-tickets/newmarket",
+      "id": "love-of-lesbian-2026-08-13-gandia",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Parc Ausiàs March",
+      "date": "2026-08-13",
+      "venue": "Parc Ausiàs March",
+      "city": "Gandía",
+      "country": "Espanya",
+      "country_code": "ES",
+      "url": "https://www.songkick.com/festivals/2296144-mediterranea/id/42898529-mediterrnea-festival-2026?utm_medium=organic&utm_source=microformat",
+      "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-08-21-pontevedra",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Recinto Ferial",
+      "date": "2026-08-21",
+      "venue": "Recinto Ferial",
+      "city": "Pontevedra",
+      "country": "Espanya",
+      "country_code": "ES",
+      "url": "https://www.songkick.com/festivals/3475298-rio-verbena/id/43045440-festival-ro-verbena-2026?utm_medium=organic&utm_source=microformat",
+      "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-08-29-marbella",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Auditorio Starlite",
+      "date": "2026-08-29",
+      "venue": "Auditorio Starlite",
+      "city": "Marbella",
+      "country": "Espanya",
+      "country_code": "ES",
+      "url": "https://www.songkick.com/concerts/43117601-festival-starlite-occident-at-auditorio-starlite?utm_medium=organic&utm_source=microformat",
+      "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-11-25-mexico-city",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Auditorio Nacional",
+      "date": "2026-11-25",
+      "venue": "Auditorio Nacional",
+      "city": "Mexico City",
+      "country": "Mèxic",
+      "country_code": "MX",
+      "url": "https://www.songkick.com/concerts/43118543-love-of-lesbian-at-auditorio-nacional?utm_medium=organic&utm_source=microformat",
       "notes": ""
     }
   ],
-  "last_updated": "2026-06-15T14:59:19+0200",
+  "last_updated": "2026-06-22T14:44:24+0200",
   "sources": [
     "https://www.stereoboard.com/madness-tickets",
     "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",

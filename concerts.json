@@ -169,30 +169,6 @@
       "notes": "Tour estivo 2026"
     },
     {
-      "id": "vascorossi-008",
-      "artist": "Vasco Rossi",
-      "title": "Vasco Live 2026 – Ancona (1)",
-      "date": "2026-06-23",
-      "venue": "Stadio del Conero",
-      "city": "Ancona",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.vascorossi.net/it/tour/vasco-live-2026/18-62872.html",
-      "notes": "Vasco Live 2026"
-    },
-    {
-      "id": "vascorossi-009",
-      "artist": "Vasco Rossi",
-      "title": "Vasco Live 2026 – Ancona (2)",
-      "date": "2026-06-24",
-      "venue": "Stadio del Conero",
-      "city": "Ancona",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.vascorossi.net/it/tour/vasco-live-2026/18-62872.html",
-      "notes": "Vasco Live 2026"
-    },
-    {
       "id": "vascorossi-010",
       "artist": "Vasco Rossi",
       "title": "Vasco Live 2026 – Udine (1)",
@@ -215,18 +191,6 @@
       "country_code": "IT",
       "url": "https://www.vascorossi.net/it/tour/vasco-live-2026/18-62872.html",
       "notes": "Vasco Live 2026"
-    },
-    {
-      "id": "mika-010",
-      "artist": "Mika",
-      "title": "Mika – Wasing Estate",
-      "date": "2026-06-26",
-      "venue": "Wasing Estate",
-      "city": "Berkshire",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.yomika.com/tour/",
-      "notes": "Tour estiu 2026"
     },
     {
       "id": "mika-011",
@@ -433,18 +397,6 @@
       "notes": ""
     },
     {
-      "id": "mika-2026-06-26-reading",
-      "artist": "Mika",
-      "title": "MIKA",
-      "date": "2026-06-26",
-      "venue": "Reading Wasing Estate",
-      "city": "Reading",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/mika-tickets/reading",
-      "notes": ""
-    },
-    {
       "id": "mika-2026-07-12-st-austell",
       "artist": "Mika",
       "title": "MIKA",
@@ -589,7 +541,7 @@
       "notes": ""
     }
   ],
-  "last_updated": "2026-06-22T14:44:24+0200",
+  "last_updated": "2026-06-27T18:10:01+0200",
   "sources": [
     "https://www.stereoboard.com/madness-tickets",
     "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",

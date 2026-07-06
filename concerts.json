@@ -97,18 +97,6 @@
       "notes": "Tour estadis Itàlia – Gli Anni d'Oro"
     },
     {
-      "id": "maxpezzali-013",
-      "artist": "Max Pezzali",
-      "title": "Max Forever Stadi – Messina",
-      "date": "2026-07-02",
-      "venue": "Stadio Franco Scoglio",
-      "city": "Messina",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.vivoconcerti.com/roster/max-pezzali/",
-      "notes": "Tour estadis Itàlia – Gli Anni d'Oro"
-    },
-    {
       "id": "maxpezzali-014",
       "artist": "Max Pezzali",
       "title": "Max Forever Stadi – Padova",
@@ -155,30 +143,6 @@
       "country_code": "IT",
       "url": "https://www.visitcampli.it/news-eventi/zeroassoluto/49-163.html",
       "notes": "Tour estivo 2026"
-    },
-    {
-      "id": "vascorossi-011",
-      "artist": "Vasco Rossi",
-      "title": "Vasco Live 2026 – Udine (2)",
-      "date": "2026-06-29",
-      "venue": "Bluenergy Stadium",
-      "city": "Udine",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.vascorossi.net/it/tour/vasco-live-2026/18-62872.html",
-      "notes": "Vasco Live 2026"
-    },
-    {
-      "id": "mika-011",
-      "artist": "Mika",
-      "title": "Mika – Pedralbes Festival",
-      "date": "2026-07-02",
-      "venue": "Jardins de Pedralbes",
-      "city": "Barcelona",
-      "country": "Espanya",
-      "country_code": "ES",
-      "url": "https://www.yomika.com/tour/",
-      "notes": "Pedralbes Festival 2026"
     },
     {
       "id": "mika-012",
@@ -251,30 +215,6 @@
       "country_code": "ES",
       "url": "https://www.yomika.com/tour/",
       "notes": "Cap Roig Festival 2026"
-    },
-    {
-      "id": "madness-2026-07-04-hamburg",
-      "artist": "Madness",
-      "title": "Madness",
-      "date": "2026-07-04",
-      "venue": "Hamburg Stadtpark Open Air",
-      "city": "Hamburg",
-      "country": "Alemanya",
-      "country_code": "DE",
-      "url": "https://www.stereoboard.com/madness-tickets/hamburg",
-      "notes": ""
-    },
-    {
-      "id": "madness-2026-07-05-berlin",
-      "artist": "Madness",
-      "title": "Madness",
-      "date": "2026-07-05",
-      "venue": "Berlin Tempodrom",
-      "city": "Berlin",
-      "country": "Alemanya",
-      "country_code": "DE",
-      "url": "https://www.stereoboard.com/madness-tickets/berlin",
-      "notes": ""
     },
     {
       "id": "madness-2026-07-07-amsterdam",
@@ -421,30 +361,6 @@
       "notes": ""
     },
     {
-      "id": "love-of-lesbian-2026-07-01-cordoba",
-      "artist": "Love Of Lesbian",
-      "title": "Love of Lesbian @ Teatro La Axerquia",
-      "date": "2026-07-01",
-      "venue": "Teatro La Axerquia",
-      "city": "Córdoba",
-      "country": "Espanya",
-      "country_code": "ES",
-      "url": "https://www.songkick.com/concerts/43053883-love-of-lesbian-at-teatro-la-axerquia?utm_medium=organic&utm_source=microformat",
-      "notes": ""
-    },
-    {
-      "id": "love-of-lesbian-2026-07-02-barbastro",
-      "artist": "Love Of Lesbian",
-      "title": "Love of Lesbian @ Recinto Ferial Barbastro",
-      "date": "2026-07-02",
-      "venue": "Recinto Ferial Barbastro",
-      "city": "Barbastro",
-      "country": "Espanya",
-      "country_code": "ES",
-      "url": "https://www.songkick.com/festivals/403963-polifonik-sound/id/43065367-polifonik-sound-2026?utm_medium=organic&utm_source=microformat",
-      "notes": ""
-    },
-    {
       "id": "love-of-lesbian-2026-07-31-torrevieja",
       "artist": "Love Of Lesbian",
       "title": "Love of Lesbian @ Parque Antonio Soria",
@@ -517,7 +433,7 @@
       "notes": ""
     }
   ],
-  "last_updated": "2026-06-29T13:54:30+0200",
+  "last_updated": "2026-07-06T13:23:53+0200",
   "sources": [
     "https://www.stereoboard.com/madness-tickets",
     "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",

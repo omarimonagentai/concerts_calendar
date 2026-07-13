@@ -73,42 +73,6 @@
       "notes": "La Notte di Certe Notti – Tour tardor, últim concert"
     },
     {
-      "id": "maxpezzali-011",
-      "artist": "Max Pezzali",
-      "title": "Max Forever Stadi – Milano (San Siro 1)",
-      "date": "2026-07-11",
-      "venue": "Stadio San Siro",
-      "city": "Milà",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.vivoconcerti.com/roster/max-pezzali/",
-      "notes": "Tour estadis Itàlia – Gli Anni d'Oro"
-    },
-    {
-      "id": "maxpezzali-012",
-      "artist": "Max Pezzali",
-      "title": "Max Forever Stadi – Milano (San Siro 2)",
-      "date": "2026-07-12",
-      "venue": "Stadio San Siro",
-      "city": "Milà",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.vivoconcerti.com/roster/max-pezzali/",
-      "notes": "Tour estadis Itàlia – Gli Anni d'Oro"
-    },
-    {
-      "id": "maxpezzali-014",
-      "artist": "Max Pezzali",
-      "title": "Max Forever Stadi – Padova",
-      "date": "2026-07-09",
-      "venue": "Stadio Euganeo",
-      "city": "Pàdua",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.vivoconcerti.com/roster/max-pezzali/",
-      "notes": "Tour estadis Itàlia – Gli Anni d'Oro"
-    },
-    {
       "id": "zeroassoluto-001",
       "artist": "Zero Assoluto",
       "title": "Zero Assoluto – Milano 2026",
@@ -217,30 +181,6 @@
       "notes": "Cap Roig Festival 2026"
     },
     {
-      "id": "madness-2026-07-07-amsterdam",
-      "artist": "Madness",
-      "title": "Madness",
-      "date": "2026-07-07",
-      "venue": "Amsterdam AFAS Live",
-      "city": "Amsterdam",
-      "country": "Països Baixos",
-      "country_code": "NL",
-      "url": "https://www.stereoboard.com/madness-tickets/amsterdam",
-      "notes": ""
-    },
-    {
-      "id": "madness-2026-07-09-bonn",
-      "artist": "Madness",
-      "title": "Madness",
-      "date": "2026-07-09",
-      "venue": "Bonn Kunstrasen Bonn Gronau",
-      "city": "Bonn",
-      "country": "Alemanya",
-      "country_code": "DE",
-      "url": "https://www.stereoboard.com/madness-tickets/bonn",
-      "notes": ""
-    },
-    {
       "id": "madness-2026-07-18-newton-le-willows",
       "artist": "Madness",
       "title": "Madness",
@@ -310,18 +250,6 @@
       "country": "",
       "country_code": "",
       "url": "",
-      "notes": ""
-    },
-    {
-      "id": "mika-2026-07-12-st-austell",
-      "artist": "Mika",
-      "title": "MIKA",
-      "date": "2026-07-12",
-      "venue": "St Austell Eden Project",
-      "city": "St Austell",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/mika-tickets/st-austell",
       "notes": ""
     },
     {
@@ -433,7 +361,7 @@
       "notes": ""
     }
   ],
-  "last_updated": "2026-07-06T13:23:53+0200",
+  "last_updated": "2026-07-13T12:17:37+0200",
   "sources": [
     "https://www.stereoboard.com/madness-tickets",
     "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",

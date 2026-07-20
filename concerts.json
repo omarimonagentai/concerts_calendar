@@ -1,30 +1,6 @@
 {
   "concerts": [
     {
-      "id": "madness-005",
-      "artist": "Madness",
-      "title": "Madness 2026 – Newmarket",
-      "date": "2026-07-17",
-      "venue": "Newmarket Racecourses",
-      "city": "Newmarket",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/madness-tickets",
-      "notes": ""
-    },
-    {
-      "id": "madness-006",
-      "artist": "Madness",
-      "title": "Madness 2026 – Haydock",
-      "date": "2026-07-18",
-      "venue": "Haydock Park Racecourse",
-      "city": "Haydock",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/madness-tickets",
-      "notes": ""
-    },
-    {
       "id": "madness-007",
       "artist": "Madness",
       "title": "Madness 2026 – Staffordshire",
@@ -97,30 +73,6 @@
       "notes": ""
     },
     {
-      "id": "zeroassoluto-004",
-      "artist": "Zero Assoluto",
-      "title": "Zero Assoluto – Sant'Onofrio di Campli",
-      "date": "2026-07-19",
-      "venue": "Sant'Onofrio di Campli",
-      "city": "Campli",
-      "country": "Itàlia",
-      "country_code": "IT",
-      "url": "https://www.visitcampli.it/news-eventi/zeroassoluto/49-163.html",
-      "notes": "Tour estivo 2026"
-    },
-    {
-      "id": "mika-012",
-      "artist": "Mika",
-      "title": "Mika – Vienne (Théâtre Antique)",
-      "date": "2026-07-16",
-      "venue": "Théâtre Antique de Vienne",
-      "city": "Vienne",
-      "country": "França",
-      "country_code": "FR",
-      "url": "https://www.yomika.com/tour/",
-      "notes": "Jazz à Vienne 2026"
-    },
-    {
       "id": "mika-013",
       "artist": "Mika",
       "title": "Mika – Toulon",
@@ -181,18 +133,6 @@
       "notes": "Cap Roig Festival 2026"
     },
     {
-      "id": "madness-2026-07-18-newton-le-willows",
-      "artist": "Madness",
-      "title": "Madness",
-      "date": "2026-07-18",
-      "venue": "Newton Le Willows Haydock Park Racecourse",
-      "city": "Newton Le Willows",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/madness-tickets/newton-le-willows",
-      "notes": ""
-    },
-    {
       "id": "madness-2026-07-23-brighton",
       "artist": "Madness",
       "title": "Madness",
@@ -238,18 +178,6 @@
       "country": "UK",
       "country_code": "GB",
       "url": "https://www.stereoboard.com/madness-tickets/devon",
-      "notes": ""
-    },
-    {
-      "id": "mika-2026-07-18-carhaix-plouguer",
-      "artist": "Mika",
-      "title": "7/18 - Carhaix Plouguer France",
-      "date": "2026-07-18",
-      "venue": "Les Vieilles Charrues",
-      "city": "Carhaix Plouguer",
-      "country": "",
-      "country_code": "",
-      "url": "",
       "notes": ""
     },
     {
@@ -361,7 +289,7 @@
       "notes": ""
     }
   ],
-  "last_updated": "2026-07-13T12:17:37+0200",
+  "last_updated": "2026-07-20T11:51:07+0200",
   "sources": [
     "https://www.stereoboard.com/madness-tickets",
     "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",

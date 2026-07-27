@@ -73,30 +73,6 @@
       "notes": ""
     },
     {
-      "id": "mika-013",
-      "artist": "Mika",
-      "title": "Mika – Toulon",
-      "date": "2026-07-24",
-      "venue": "Zénith de Toulon",
-      "city": "Toló",
-      "country": "França",
-      "country_code": "FR",
-      "url": "https://www.yomika.com/tour/",
-      "notes": "Tour estiu 2026"
-    },
-    {
-      "id": "mika-014",
-      "artist": "Mika",
-      "title": "Mika – Bayonne",
-      "date": "2026-07-25",
-      "venue": "Arena of Bayonne",
-      "city": "Baiona",
-      "country": "França",
-      "country_code": "FR",
-      "url": "https://www.yomika.com/tour/",
-      "notes": "Tour estiu 2026"
-    },
-    {
       "id": "mika-015",
       "artist": "Mika",
       "title": "Mika – Glasgow",
@@ -133,30 +109,6 @@
       "notes": "Cap Roig Festival 2026"
     },
     {
-      "id": "madness-2026-07-23-brighton",
-      "artist": "Madness",
-      "title": "Madness",
-      "date": "2026-07-23",
-      "venue": "Brighton Beach",
-      "city": "Brighton",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/madness-tickets/brighton",
-      "notes": ""
-    },
-    {
-      "id": "madness-2026-07-24-brighton",
-      "artist": "Madness",
-      "title": "Madness",
-      "date": "2026-07-24",
-      "venue": "Brighton Beach",
-      "city": "Brighton",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/madness-tickets/brighton",
-      "notes": ""
-    },
-    {
       "id": "madness-2026-08-09-canterbury",
       "artist": "Madness",
       "title": "Madness",
@@ -178,30 +130,6 @@
       "country": "UK",
       "country_code": "GB",
       "url": "https://www.stereoboard.com/madness-tickets/devon",
-      "notes": ""
-    },
-    {
-      "id": "mika-2026-07-24-toulon",
-      "artist": "Mika",
-      "title": "Mika",
-      "date": "2026-07-24",
-      "venue": "Toulon Zenith Omega Toulon",
-      "city": "Toulon",
-      "country": "França",
-      "country_code": "FR",
-      "url": "https://www.stereoboard.com/mika-tickets/toulon",
-      "notes": ""
-    },
-    {
-      "id": "mika-2026-07-25-bayonne",
-      "artist": "Mika",
-      "title": "MIKA",
-      "date": "2026-07-25",
-      "venue": "Bayonne ARENES DE BAYONNE",
-      "city": "Bayonne",
-      "country": "França",
-      "country_code": "FR",
-      "url": "https://www.stereoboard.com/mika-tickets/bayonne",
       "notes": ""
     },
     {
@@ -289,7 +217,7 @@
       "notes": ""
     }
   ],
-  "last_updated": "2026-07-20T11:51:07+0200",
+  "last_updated": "2026-07-27T12:34:11+0200",
   "sources": [
     "https://www.stereoboard.com/madness-tickets",
     "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",

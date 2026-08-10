@@ -73,42 +73,6 @@
       "notes": ""
     },
     {
-      "id": "mika-016",
-      "artist": "Mika",
-      "title": "Mika – Arcachon",
-      "date": "2026-08-04",
-      "venue": "Vélodrome d'Arcachon",
-      "city": "Arcachon",
-      "country": "França",
-      "country_code": "FR",
-      "url": "https://www.yomika.com/tour/",
-      "notes": "Tour estiu 2026"
-    },
-    {
-      "id": "mika-017",
-      "artist": "Mika",
-      "title": "Mika – Cap Roig Festival",
-      "date": "2026-08-08",
-      "venue": "Jardins de Cap Roig",
-      "city": "Calella de Palafrugell",
-      "country": "Espanya",
-      "country_code": "ES",
-      "url": "https://www.yomika.com/tour/",
-      "notes": "Cap Roig Festival 2026"
-    },
-    {
-      "id": "madness-2026-08-09-canterbury",
-      "artist": "Madness",
-      "title": "Madness",
-      "date": "2026-08-09",
-      "venue": "Canterbury Spitfire Ground",
-      "city": "Canterbury",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/madness-tickets/canterbury",
-      "notes": ""
-    },
-    {
       "id": "madness-2026-08-22-devon",
       "artist": "Madness",
       "title": "Madness",
@@ -130,18 +94,6 @@
       "country": "França",
       "country_code": "FR",
       "url": "https://www.stereoboard.com/mika-tickets/chalons-en-champagne",
-      "notes": ""
-    },
-    {
-      "id": "love-of-lesbian-2026-08-05-aranda-de-duero",
-      "artist": "Love Of Lesbian",
-      "title": "Love of Lesbian @ Sonorama",
-      "date": "2026-08-05",
-      "venue": "Sonorama",
-      "city": "Aranda de Duero",
-      "country": "Espanya",
-      "country_code": "ES",
-      "url": "https://www.songkick.com/festivals/911194-sonorama-ribera/id/42922460-sonorama-ribera-2026?utm_medium=organic&utm_source=microformat",
       "notes": ""
     },
     {
@@ -191,21 +143,9 @@
       "country_code": "MX",
       "url": "https://www.songkick.com/concerts/43118543-love-of-lesbian-at-auditorio-nacional?utm_medium=organic&utm_source=microformat",
       "notes": ""
-    },
-    {
-      "id": "mika-2026-08-08-palafrugell",
-      "artist": "Mika",
-      "title": "Mika",
-      "date": "2026-08-08",
-      "venue": "Palafrugell Jardins de Cap Roig",
-      "city": "Palafrugell",
-      "country": "Espanya",
-      "country_code": "ES",
-      "url": "https://www.stereoboard.com/mika-tickets/palafrugell",
-      "notes": ""
     }
   ],
-  "last_updated": "2026-08-03T12:33:49+0200",
+  "last_updated": "2026-08-10T10:22:28+0200",
   "sources": [
     "https://www.stereoboard.com/madness-tickets",
     "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",

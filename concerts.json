@@ -97,18 +97,6 @@
       "notes": ""
     },
     {
-      "id": "love-of-lesbian-2026-08-13-gandia",
-      "artist": "Love Of Lesbian",
-      "title": "Love of Lesbian @ Parc Ausiàs March",
-      "date": "2026-08-13",
-      "venue": "Parc Ausiàs March",
-      "city": "Gandía",
-      "country": "Espanya",
-      "country_code": "ES",
-      "url": "https://www.songkick.com/festivals/2296144-mediterranea/id/42898529-mediterrnea-festival-2026?utm_medium=organic&utm_source=microformat",
-      "notes": ""
-    },
-    {
       "id": "love-of-lesbian-2026-08-21-pontevedra",
       "artist": "Love Of Lesbian",
       "title": "Love of Lesbian @ Recinto Ferial",
@@ -143,9 +131,21 @@
       "country_code": "MX",
       "url": "https://www.songkick.com/concerts/43118543-love-of-lesbian-at-auditorio-nacional?utm_medium=organic&utm_source=microformat",
       "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-11-28-cholula",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Foro Cholula",
+      "date": "2026-11-28",
+      "venue": "Foro Cholula",
+      "city": "Cholula",
+      "country": "Mèxic",
+      "country_code": "MX",
+      "url": "https://www.songkick.com/festivals/1888074-tecate-comuna/id/43234735-tecate-comuna-2026?utm_medium=organic&utm_source=microformat",
+      "notes": ""
     }
   ],
-  "last_updated": "2026-08-10T10:22:28+0200",
+  "last_updated": "2026-08-17T09:44:39+0200",
   "sources": [
     "https://www.stereoboard.com/madness-tickets",
     "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",

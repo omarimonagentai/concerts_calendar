@@ -1,30 +1,6 @@
 {
   "concerts": [
     {
-      "id": "madness-007",
-      "artist": "Madness",
-      "title": "Madness 2026 – Staffordshire",
-      "date": "2026-08-21",
-      "venue": "The Trentham Estate",
-      "city": "Staffordshire",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/madness-tickets",
-      "notes": ""
-    },
-    {
-      "id": "madness-008",
-      "artist": "Madness",
-      "title": "Madness 2026 – Norwich",
-      "date": "2026-08-23",
-      "venue": "Earlham Park",
-      "city": "Norwich",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/madness-tickets",
-      "notes": ""
-    },
-    {
       "id": "ligabue-013",
       "artist": "Ligabue",
       "title": "Ligabue – Verona",
@@ -73,18 +49,6 @@
       "notes": ""
     },
     {
-      "id": "madness-2026-08-22-devon",
-      "artist": "Madness",
-      "title": "Madness",
-      "date": "2026-08-22",
-      "venue": "Devon Escot Park",
-      "city": "Devon",
-      "country": "UK",
-      "country_code": "GB",
-      "url": "https://www.stereoboard.com/madness-tickets/devon",
-      "notes": ""
-    },
-    {
       "id": "mika-2026-09-05-chalons-en-champagne",
       "artist": "Mika",
       "title": "MIKA",
@@ -94,18 +58,6 @@
       "country": "França",
       "country_code": "FR",
       "url": "https://www.stereoboard.com/mika-tickets/chalons-en-champagne",
-      "notes": ""
-    },
-    {
-      "id": "love-of-lesbian-2026-08-21-pontevedra",
-      "artist": "Love Of Lesbian",
-      "title": "Love of Lesbian @ Recinto Ferial",
-      "date": "2026-08-21",
-      "venue": "Recinto Ferial",
-      "city": "Pontevedra",
-      "country": "Espanya",
-      "country_code": "ES",
-      "url": "https://www.songkick.com/festivals/3475298-rio-verbena/id/43045440-festival-ro-verbena-2026?utm_medium=organic&utm_source=microformat",
       "notes": ""
     },
     {
@@ -143,9 +95,21 @@
       "country_code": "MX",
       "url": "https://www.songkick.com/festivals/1888074-tecate-comuna/id/43234735-tecate-comuna-2026?utm_medium=organic&utm_source=microformat",
       "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-11-24-mexico-city",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Teatro Metropólitan",
+      "date": "2026-11-24",
+      "venue": "Teatro Metropólitan",
+      "city": "Mexico City",
+      "country": "Mèxic",
+      "country_code": "MX",
+      "url": "https://www.songkick.com/concerts/43373527-love-of-lesbian-at-teatro-metropolitan?utm_medium=organic&utm_source=microformat",
+      "notes": ""
     }
   ],
-  "last_updated": "2026-08-17T09:44:39+0200",
+  "last_updated": "2026-08-24T09:51:10+0200",
   "sources": [
     "https://www.stereoboard.com/madness-tickets",
     "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",

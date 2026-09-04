@@ -199,6 +199,32 @@
       ],
       "notes": "Gira 'Ejército de Salvación' 2026 — Mèxic (març) + Espanya (juny–octubre).",
       "last_checked": "2026-09-04T15:35:54+0200"
+    },
+    {
+      "name": "Justin Bieber",
+      "active": true,
+      "sources": [
+        "https://www.justinbiebermusic.com/promo/tour/",
+        "https://www.songkick.com/artists/2596951-justin-bieber",
+        "https://www.ticketmaster.com/justin-bieber-tickets/artist/1369961",
+        "https://www.ticketmaster.es/search?q=justin+bieber",
+        "https://en.wikipedia.org/wiki/List_of_Justin_Bieber_live_performances"
+      ],
+      "notes": "Sense dates anunciades a la web oficial (setembre 2026) — monitoratge actiu a l'espera de gira.",
+      "last_checked": null
+    },
+    {
+      "name": "Buhos",
+      "active": true,
+      "sources": [
+        "https://buhosrock.com/",
+        "https://www.songkick.com/artists/2055323-buhos",
+        "https://www.bandsintown.com/a/1950846-buhos",
+        "https://www.viasona.cat/agenda/grup/Buhos",
+        "https://www.ticketmaster.es/search?q=buhos"
+      ],
+      "notes": "Gira 20è aniversari 2026 (Catalunya) — inclou Palau de la Música Catalana el 14/11/2026.",
+      "last_checked": null
     }
   ]
 }

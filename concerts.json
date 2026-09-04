@@ -107,6 +107,18 @@
       "country_code": "ES",
       "url": "https://www.songkick.com/festivals/3716153-muralla-indie/id/42965280-muralla-indie-2026?utm_medium=organic&utm_source=microformat",
       "notes": ""
+    },
+    {
+      "id": "buhos-2026-11-14-barcelona",
+      "artist": "Buhos",
+      "title": "Buhos – Palau de la Música (20è aniversari)",
+      "date": "2026-11-14",
+      "venue": "Palau de la Música Catalana",
+      "city": "Barcelona",
+      "country": "Espanya",
+      "country_code": "ES",
+      "url": "https://www.palaumusica.cat/en/buhos_1533015",
+      "notes": "Gira 20è aniversari"
     }
   ],
   "last_updated": "2026-09-04T15:35:54+0200",
@@ -121,7 +133,8 @@
     "https://www.vascorossi.net/it/tour/vasco-live-2026/18-62872.html",
     "https://greenday.com/tour/",
     "https://mikaspinningouttour.com/",
-    "https://www.yomika.com/tour/"
+    "https://www.yomika.com/tour/",
+    "https://www.palaumusica.cat/en/buhos_1533015"
   ],
   "notes": {
     "Oasis": "Tour 2025 finalitzat. Tour 2027 pendent d'anunci oficial.",

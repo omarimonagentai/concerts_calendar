@@ -964,22 +964,27 @@ function buildCalendar(concerts) {
     };
   });
 
-  // Calcula la durada en mesos: des de maig 2026 fins al darrer concert
-  const startDate = new Date("2026-05-01T12:00:00");
-  const lastConcertDate = concerts.length
-    ? new Date(concerts.map(c => c.date).sort().at(-1) + "T12:00:00")
-    : new Date("2026-12-31T12:00:00");
-  const totalMonths = Math.max(
-    (lastConcertDate.getFullYear() - startDate.getFullYear()) * 12
-    + (lastConcertDate.getMonth() - startDate.getMonth()) + 1,
-    1
-  );
+  // Rang de mesos: del primer mes amb concerts al darrer mes amb concerts.
+  // Els mesos buits del mig es mantenen (un calendari no salta de mes).
+  // El rang sempre inclou el mes actual, perquè en carregar ens posicionem a avui.
+  // Es calcula amb TOTS els concerts (no els filtrats) per no moure el rang al filtrar.
+  const allDates = (window._ALL_CONCERTS || concerts || []).map(c => c.date).sort();
+  const today = new Date();
+  const monthIndex = d => d.getFullYear() * 12 + d.getMonth();
+  const firstConcert = allDates.length ? new Date(allDates[0] + "T12:00:00") : today;
+  const lastConcert  = allDates.length ? new Date(allDates.at(-1) + "T12:00:00") : today;
+
+  const startIdx = Math.min(monthIndex(firstConcert), monthIndex(today));
+  const endIdx   = Math.max(monthIndex(lastConcert),  monthIndex(today));
+  const startDate = new Date(Math.floor(startIdx / 12), startIdx % 12, 1, 12);
+  const totalMonths = endIdx - startIdx + 1;
+  const initialDate = `${startDate.getFullYear()}-${String(startDate.getMonth()+1).padStart(2,"0")}-01`;
 
   const isMobile = window.innerWidth <= 600;
 
   const cal = new FullCalendar.Calendar(document.getElementById("fullcalendar"), {
     initialView: "multiMonthStack",
-    initialDate: "2026-05-01",
+    initialDate,
     views: {
       multiMonthStack: {
         type: "multiMonth",
@@ -1020,6 +1025,37 @@ function buildCalendar(concerts) {
   });
   cal.render();
   window._fc = cal;
+
+  // En el primer render, posiciona la vista al mes d'avui (des d'aquí es pot
+  // fer scroll cap al passat o cap al futur). Als re-renders (filtres,
+  // refresc) no toquem l'scroll de l'usuari.
+  if (!window._calendarPositioned) {
+    window._calendarPositioned = true;
+    scrollToTodayMonth();
+  }
+}
+
+// Fa scroll fins al bloc del mes actual, just per sota de la topbar sticky
+function scrollToTodayMonth(attempt = 0) {
+  const cont = document.getElementById("fullcalendar");
+  if (!cont) return;
+  const now = new Date();
+  const key = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;
+  // data-date del mes pot ser "2026-09" o "2026-09-01" segons la versió
+  const target =
+    cont.querySelector(`.fc-multimonth-month[data-date^="${key}"]`) ||
+    cont.querySelector(".fc-day-today:not(.fc-day-other)")?.closest(".fc-multimonth-month");
+
+  if (!target) {
+    // El mes encara no és al DOM: torna-ho a provar uns frames més tard
+    if (attempt < 20) requestAnimationFrame(() => scrollToTodayMonth(attempt + 1));
+    return;
+  }
+
+  const topbar = document.querySelector(".topbar");
+  const offset = (topbar ? topbar.getBoundingClientRect().height : 0) + 12;
+  const y = target.getBoundingClientRect().top + window.scrollY - offset;
+  window.scrollTo({ top: Math.max(y, 0), behavior: "auto" });
 }
 
 // ── Dates helpers ─────────────────────────────────────────────────────

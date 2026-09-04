@@ -95,9 +95,21 @@
       "country_code": "MX",
       "url": "https://www.songkick.com/concerts/43373527-love-of-lesbian-at-teatro-metropolitan?utm_medium=organic&utm_source=microformat",
       "notes": ""
+    },
+    {
+      "id": "love-of-lesbian-2026-09-25-alcala-de-henares",
+      "artist": "Love Of Lesbian",
+      "title": "Love of Lesbian @ Huerta del Obispo",
+      "date": "2026-09-25",
+      "venue": "Huerta del Obispo",
+      "city": "Alcalá de Henares",
+      "country": "Espanya",
+      "country_code": "ES",
+      "url": "https://www.songkick.com/festivals/3716153-muralla-indie/id/42965280-muralla-indie-2026?utm_medium=organic&utm_source=microformat",
+      "notes": ""
     }
   ],
-  "last_updated": "2026-08-31T16:35:53+0200",
+  "last_updated": "2026-09-04T15:35:54+0200",
   "sources": [
     "https://www.stereoboard.com/madness-tickets",
     "https://www.vivoconcerti.com/roster/max-pezzali/max-forever-goes-to-europe",
